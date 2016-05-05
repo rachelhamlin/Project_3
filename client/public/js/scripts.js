@@ -1,7 +1,7 @@
-console.log("it's alive");
-
 console.log('wassssupppp');
 
+
+// Adds Google Map with geolocation (if browser and user permit)
 var initialLocation;
 var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
@@ -41,6 +41,9 @@ function initMap() {
   }
 }
 
+
+
+// Run on document load
 
 $(function(){
 
