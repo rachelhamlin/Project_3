@@ -1,8 +1,9 @@
 var express    = require('express'),
     morgan     = require('morgan'),
+    path       = require('path'),
     mongoose   = require('mongoose'),
-    bodyParser = require('body-parser'),
-    dotEnv     = ('dotenv').config();
+    bodyParser = require('body-parser');
+    // dotEnv     = ('dotenv').config();
 
 var app = express();
 
