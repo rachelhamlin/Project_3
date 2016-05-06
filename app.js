@@ -28,10 +28,12 @@ app.use(express.static('client/public'));
 var indexRouter     = require('./server/routes/index.js');
 var apiUsersRouter  = require('./server/routes/api/users.js');
 var apiAuthRouter   = require('./server/routes/api/auth.js');
+var loginRouter     = require('./server/routes/login.js');
 
 app.use('/', indexRouter);
 app.use('/api/users', apiUsersRouter);
 app.use('/api/auth', apiAuthRouter);
+app.use('/login', loginRouter);
 
 
 app.listen( 8080, function() {

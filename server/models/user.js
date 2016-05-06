@@ -24,12 +24,12 @@ var userSchema      = mongoose.Schema({
   lastName: {
     type: String
   },
-  address: {
-    type: String  // This should be an array of 3 lines for formatted address
-  },
-  favorites: {
-    type: Array // Array of objects. Not sure how to implement this yet
-  },
+  // address: {
+  //   type: String  // This should be an array of 3 lines for formatted address
+  // },
+  // favorites: {
+  //   type: Array // Array of objects. Not sure how to implement this yet
+  // },
   public: {
     type: Boolean, // Also not sure of this
     default: false
