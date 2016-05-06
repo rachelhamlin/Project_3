@@ -4,12 +4,33 @@
     <meta charset="utf-8">
     <title>Mobcats</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> <!-- adds FontAwesome library -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA2MtDTfBu8jQbwT0m2OAxLuG55VNt_8Q&libraries=places"></script>
-    <!-- Update Maps URL -->
+    <!-- TODO Update Maps URL with hidden key -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script src="/js/scripts.js" charset="utf-8"></script>
   </head>
   <body>
+
+    <div id='header'>
+
+      <div id='hamburger-button'>
+       <span></span>
+       <span></span>
+       <span></span>
+     </div>
+
+      <div id='logo'>MobCats</div>
+
+      <div class='box'>
+        <div class='container'>
+          <input type='search' id='search-term' placeholder="Search for a location">
+          <button type='submit' class='icon'><i class='fa fa-search'></i></button>
+        </div>
+      </div>
+
+   </div>
+
     <div id='map'>
     </div>
   </body>
