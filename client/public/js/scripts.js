@@ -9,7 +9,7 @@ var service; // PLACES
 function initMap() {
   console.log('initializing');
   var options = {
-    zoom: 15
+    zoom: 16
     // TODO style map for uniqueness
     // styles: [{
     //   stylers: [{ visibility: 'simplified' }]
