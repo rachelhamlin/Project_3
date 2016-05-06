@@ -1,10 +1,11 @@
-var express       = require('express'),
+var dotenv        = require('dotenv').config(),
+    express       = require('express'),
     morgan        = require('morgan'),
     path          = require('path'),
     mongoose      = require('mongoose'),
     bodyParser    = require('body-parser'),
     cookieParser  = require('cookie-parser');
-    // dotEnv     = ('dotenv').config();
+
 
 // Define new Express app
 var app = express();
