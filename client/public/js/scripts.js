@@ -43,8 +43,6 @@ function initMap() {
     map.setCenter(initialLocation);
   }
 
-  // Places Search
-
   // Autocomplete search box within #search-term UI
   var input = document.getElementById('search-term');
   var searchBox = new google.maps.places.SearchBox(input);
@@ -54,9 +52,16 @@ function initMap() {
     searchBox.setBounds(map.getBounds());
   })
 
+  // Return Place results
+  getPlaceResults(searchBox, map);
+}; // end InitMap
+
+
+
+function getPlaceResults(searchBox, map) {
   var markers = [];
   // Listen for event fired when user selects a prediction and retrieve more details for that place
-  $('#search-submit').click(function() {
+  searchBox.addListener('places_changed', function() {
     console.log('ARE YOU LISTENING TO ME');
     var places = searchBox.getPlaces();
 
@@ -77,7 +82,7 @@ function initMap() {
         size: new google.maps.Size(71,71),
         origin: new google.maps.Point(0,0),
         anchor: new google.maps.Point(17,34),
-        scaledSize: new google.maps.Size(25,25)
+        scaledSize: new google.maps.Size(20,20)
       };
 
       markers.push(new google.maps.Marker({
@@ -95,56 +100,7 @@ function initMap() {
     });
     map.fitBounds(bounds);
   });
-
-
-  // searchBox.addListener('places_changed', function(){
-  //   console.log('Selected something!');
-  //   var places = searchBox.getPlaces();
-  //
-  //   if (places.length == 0) {
-  //     return;
-  //   }
-  //
-  //   // Clear out old markers
-  //   markers.forEach(function(marker) {
-  //     marker.setMap(null);
-  //   });
-  //   markers = [];
-  //
-  //   var bounds = new google.maps.LatLngBounds();
-  //   places.forEach(function(place){
-  //     var icon = {
-  //       url: place.icon,
-  //       size: new google.maps.Size(71,71),
-  //       origin: new google.maps.Point(0,0),
-  //       anchor: new google.maps.Point(17,34),
-  //       scaledSize: new google.maps.Size(25,25)
-  //     };
-  //
-  //     markers.push(new google.maps.Marker({
-  //       map: map,
-  //       icon: icon,
-  //       title: place.name,
-  //       position: place.geometry.location
-  //     }));
-  //
-  //     if (place.geometry.viewport) {
-  //       bounds.union(place.geometry.viewport);
-  //     } else {
-  //       bounds.extend(place.geometry.location);
-  //     }
-  //   });
-  //   map.fitBounds(bounds);
-  // });
-
-
-}; // end InitMap
-
-
-
-// function getPlaces(map, searchBox) {
-//
-// }
+}
 
 
 // Run on document load
@@ -152,8 +108,5 @@ function initMap() {
 $(function(){
 
   initMap();
-  // $('#search-submit').submit(function(){
-  //   getPlaces();
-  // })
 
 })
