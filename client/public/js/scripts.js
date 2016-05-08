@@ -1,3 +1,5 @@
+//// Rendering Map and Places ////
+
 // Google Map with geolocation (if browser and user permit)
 var map;
 var initialLocation;
@@ -49,11 +51,10 @@ function initMap() {
 
   // Bias the searchBox results toward current map viewport
   map.addListener('bounds_changed', function(){
-    console.log("You moved the map!");
     searchBox.setBounds(map.getBounds());
   })
 
-  // Return Place results
+  // Pass Place function searchBox & map to get Place results
   getPlaceResults(searchBox, map);
 
 }; // end InitMap
@@ -63,7 +64,6 @@ function getPlaceResults(searchBox, map) {
   var markers = [];
   // Listen for event fired when user selects a prediction and retrieve more details for that place
   searchBox.addListener('places_changed', function() {
-    console.log('I got some places');
     var places = searchBox.getPlaces();
 
     if (places.length == 0) {
@@ -109,6 +109,7 @@ function getPlaceResults(searchBox, map) {
             if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
             if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
             contentStr += '<br>'+place.types+'</p>';
+            contentStr += '<button id="save-place">Save</button>';
             infowindow.setContent(contentStr);
             infowindow.open(map,marker);
           } else {
@@ -127,28 +128,39 @@ function getPlaceResults(searchBox, map) {
 
     });
     map.fitBounds(bounds);
-  });
-}
+    map.addListener('dragend', function() {
+      console.log('congrats you dragged it');
+      var bounds = map.getBounds(bounds);
+    });
+  })
+} // end GetPlaceResults
 
 function resetLocation() {
-  var button = $('#re-geolocate');
-  button.click(function(){
-    console.log('AHHHHH');
+  var geoButton = $('#re-geolocate');
+  geoButton.click(function(){
     if(browserSupportFlag == true){
-      console.log('LOCATE ME');
       map.setCenter(initialLocation);
       map.setZoom(16);
     } else {
-      alert('Geolocation not gonna work brah');
+      alert("Geolocation service failed.");
     }
   })
-};// end resetLocation
+}; // end resetLocation
+
+
+//// Saving Places ////
+function savePlace(){
+  var saveButton = $('#save-place');
+  $(document).on('click', '#save-place', function(){
+    alert("Okay, saving!");
+  })
+};
 
 // Run on document load
-
 $(function(){
 
   initMap();
   resetLocation();
+  savePlace();
 
 })
