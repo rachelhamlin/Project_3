@@ -1,6 +1,5 @@
-console.log('wassssupppp');
-
 // Google Map with geolocation (if browser and user permit)
+var map;
 var initialLocation;
 var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
@@ -14,13 +13,14 @@ function initMap() {
     //   stylers: [{ visibility: 'simplified' }]
     // }]
   };
-  var map = new google.maps.Map(document.getElementById('map'), options);
+  map = new google.maps.Map(document.getElementById('map'), options);
   var geoMarker = new GeolocationMarker(map);
 
   if(navigator.geolocation) {
     browserSupportFlag = true;
     navigator.geolocation.getCurrentPosition(function(position) {
       initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      console.log("You are here " + initialLocation);
       map.setCenter(initialLocation);
     }, function() {
       handleNoGeolocation(browserSupportFlag);
@@ -49,11 +49,13 @@ function initMap() {
 
   // Bias the searchBox results toward current map viewport
   map.addListener('bounds_changed', function(){
+    console.log("You moved the map!");
     searchBox.setBounds(map.getBounds());
   })
 
   // Return Place results
   getPlaceResults(searchBox, map);
+
 }; // end InitMap
 
 
@@ -61,7 +63,7 @@ function getPlaceResults(searchBox, map) {
   var markers = [];
   // Listen for event fired when user selects a prediction and retrieve more details for that place
   searchBox.addListener('places_changed', function() {
-    console.log('ARE YOU LISTENING TO ME');
+    console.log('I got some places');
     var places = searchBox.getPlaces();
 
     if (places.length == 0) {
@@ -117,60 +119,30 @@ function getPlaceResults(searchBox, map) {
         });
       });
 
-      // markers.push(new google.maps.Marker({
-      //   map: map,
-      //   icon: icon,
-      //   title: place.name,
-      //   position: place.geometry.location
-      // }));
-
-
       if (place.geometry.viewport) {
         bounds.union(place.geometry.viewport);
       } else {
         bounds.extend(place.geometry.location);
       }
 
-      // getPlaceDetails(map, place);
-      // renderInfoWindow();
     });
     map.fitBounds(bounds);
-  });
-}
-
-function renderInfoWindow(){
-  var infowindow = new google.maps.InfoWindow({
-    content: contentString
-  });
-
-  var marker = new google.maps.Marker({
-    position: uluru,
-    map: map,
-    title: 'Uluru (Ayers Rock)'
-  });
-  marker.addListener('click', function() {
-    infowindow.open(map, marker);
-  });
-}
-
-function getPlaceDetails(map, place) {
-  var request = { placeId: place.placeId };
-
-  service = new google.maps.places.PlacesService(map);
-  service.getDetails(request, function(place, status){
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-      createMarker(place);
-    }
   });
 }
 
 function resetLocation() {
   var button = $('#re-geolocate');
   button.click(function(){
-    console.log('Im alive');
-    initMap();
+    console.log('AHHHHH');
+    if(browserSupportFlag == true){
+      console.log('LOCATE ME');
+      map.setCenter(initialLocation);
+      map.setZoom(16);
+    } else {
+      alert('Geolocation not gonna work brah');
+    }
   })
-}
+};// end resetLocation
 
 // Run on document load
 
