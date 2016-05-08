@@ -31,7 +31,7 @@ var userSchema      = mongoose.Schema({
   //   type: Array // Array of objects. Not sure how to implement this yet
   // },
   public: {
-    type: Boolean, // Also not sure of this
+    type: Boolean, // Also not sure about this
     default: false
   }
 }, {timestamps: true});

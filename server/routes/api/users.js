@@ -6,13 +6,29 @@ var User          = require('../../models/user');
 var passport = require("../../lib/passportStrategy.js");
 
 usersRouter.post('/', function(req, res){
-  User.create( req.body.user, function(error, dbUser){
-    if(error){
-      // Throw status
-    } else {
-      res.json(dbUser);
-    }
+  var newUser = User({
+    username:   req.body.username,
+    email:      req.body.email,
+    password:   req.body.password,
+    firstName:  req.body.firstName,
+    lastName:   req.body.lastName
   });
+
+  newUser.save(function(error, dbUser){
+    if(error){
+      console.log("Failed saving User: " + error);
+      res.status(501).json(error);
+    } else {
+      res.status(201).json(dbUser);
+    }
+  })
+  // User.create( req.body.user, function(error, dbUser){
+  //   if(error){
+  //     // Throw status
+  //   } else {
+  //     res.json(dbUser);
+  //   }
+  // });
 });
 
 // Routes about this line are not protected
