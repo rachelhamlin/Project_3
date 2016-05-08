@@ -1,3 +1,5 @@
+// Working on re-geolocating the user on button click
+
 console.log('wassssupppp');
 
 // Google Map with geolocation (if browser and user permit)
@@ -17,6 +19,10 @@ function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), options);
   var geoMarker = new GeolocationMarker(map);
 
+  geolocate(map);
+}; // end InitMap
+
+function geolocate(map) {
   if(navigator.geolocation) {
     browserSupportFlag = true;
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -52,11 +58,13 @@ function initMap() {
     searchBox.setBounds(map.getBounds());
   })
 
-  // Return Place results
+  // Pass places function searchBox & map
   getPlaceResults(searchBox, map);
-}; // end InitMap
+
+}; // end geolocate
 
 
+// get Places results
 function getPlaceResults(searchBox, map) {
   var markers = [];
   // Listen for event fired when user selects a prediction and retrieve more details for that place
@@ -74,10 +82,7 @@ function getPlaceResults(searchBox, map) {
     });
     markers = [];
 
-
-    // Add new markers for each Place
     var bounds = new google.maps.LatLngBounds();
-    var infowindow = new google.maps.InfoWindow();
     places.forEach(function(place){
       var icon = {
         url: place.icon,
@@ -87,50 +92,18 @@ function getPlaceResults(searchBox, map) {
         scaledSize: new google.maps.Size(20,20)
       };
 
-      var marker = new google.maps.Marker({
+      markers.push(new google.maps.Marker({
         map: map,
         icon: icon,
         title: place.name,
         position: place.geometry.location
-      })
-
-      markers.push(marker);
-
-      var request = {
-        reference: place.reference
-      };
-      google.maps.event.addListener(marker, 'click', function(){
-        service = new google.maps.places.PlacesService(map);
-        service.getDetails(request, function(place,status){
-          if (status == google.maps.places.PlacesServiceStatus.OK) {
-            var contentStr = '<h5>'+place.name+'</h5><p>'+place.formatted_address;
-            if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
-            if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
-            contentStr += '<br>'+place.types+'</p>';
-            infowindow.setContent(contentStr);
-            infowindow.open(map,marker);
-          } else {
-            var contentStr = "<h5>No Result, status="+status+"</h5>";
-            infowindow.setContent(contentStr);
-            infowwindow.open(map,marker);
-          }
-        });
-      });
-
-      // markers.push(new google.maps.Marker({
-      //   map: map,
-      //   icon: icon,
-      //   title: place.name,
-      //   position: place.geometry.location
-      // }));
-
+      }));
 
       if (place.geometry.viewport) {
         bounds.union(place.geometry.viewport);
       } else {
         bounds.extend(place.geometry.location);
       }
-
       // getPlaceDetails(map, place);
       // renderInfoWindow();
     });
@@ -166,9 +139,10 @@ function getPlaceDetails(map, place) {
 
 function resetLocation() {
   var button = $('#re-geolocate');
-  button.click(function(){
-    console.log('Im alive');
+  button.on('click', function(){
+    console.log('Im alive!');
     initMap();
+    geolocate();
   })
 }
 
