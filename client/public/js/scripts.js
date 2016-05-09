@@ -5,6 +5,7 @@ var map;
 var initialLocation;
 var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
+var markers = [];
 
 function initMap() {
   console.log('initializing');
@@ -56,12 +57,13 @@ function initMap() {
 
   // Pass Place function searchBox & map to get Place results
   getPlaceResults(searchBox, map);
+  updatePlaceResults(searchBox, map);
 
 }; // end InitMap
 
 
 function getPlaceResults(searchBox, map) {
-  var markers = [];
+  // var markers = [];
   // Listen for event fired when user selects a prediction and retrieve more details for that place
   searchBox.addListener('places_changed', function() {
     var places = searchBox.getPlaces();
@@ -128,12 +130,41 @@ function getPlaceResults(searchBox, map) {
 
     });
     map.fitBounds(bounds);
-    map.addListener('dragend', function() {
-      console.log('congrats you dragged it');
-      var bounds = map.getBounds(bounds);
-    });
   })
-} // end GetPlaceResults
+}// end GetPlaceResults
+
+
+function updatePlaceResults(searchBox, map) {
+  map.addListener('dragend', function() {
+    console.log('congrats you dragged it');
+    var places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+
+    var bounds = map.getBounds();
+    places.forEach(function(place){
+      var icon = {
+        url: place.icon,
+        size: new google.maps.Size(71,71),
+        origin: new google.maps.Point(0,0),
+        anchor: new google.maps.Point(17,34),
+        scaledSize: new google.maps.Size(20,20)
+      };
+
+      var marker = new google.maps.Marker({
+        map: map,
+        icon: icon,
+        title: place.name,
+        position: place.geometry.location
+      })
+
+      markers.push(marker);
+  });
+
+  })
+} // end updatePlaceResults
 
 function resetLocation() {
   var geoButton = $('#re-geolocate');
