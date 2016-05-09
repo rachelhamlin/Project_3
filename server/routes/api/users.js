@@ -19,7 +19,11 @@ usersRouter.post('/', function(req, res){
       console.log("Failed saving User: " + error);
       res.status(501).json(error);
     } else {
-      res.status(201).json(dbUser);
+      // res.status(201).json(dbUser);
+      // res.render('/users/' + dbUser.id);
+      // res.redirect('/');
+      console.log(dbUser);
+      res.redirect('localhost:8080')
     }
   })
   // User.create( req.body.user, function(error, dbUser){

@@ -19,10 +19,7 @@ function setSubmitHandler(){
     $.ajax({
       url:      '/api/users',
       method:   'post',
-      data:     payload,
-      success:  function(dbUser){
-        console.log(dbUser + " saved");
-      }
+      data:     payload
     });
   });
 };
