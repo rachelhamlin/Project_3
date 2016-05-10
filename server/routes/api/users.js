@@ -21,10 +21,14 @@ usersRouter.post('/', function(req, res){
       res.status(501).json(error);
     } else {
       // res.status(201).json(dbUser);
-      // res.render('/users/' + dbUser.id);
-      // res.redirect('/');
       console.log(dbUser);
-      res.render('profile', {user: dbUser});
+      // res.render('profile', {user: dbUser});
+      // res.redirect('http://localhost:8080');
+      res.login(dbUser, function(error){
+        if(!error){
+          res.redirect('http://localhost:8080');
+        }
+      })
     }
   })
   // User.create( req.body.user, function(error, dbUser){
