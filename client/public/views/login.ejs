@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mobcats</title>
+    <!-- <link rel="stylesheet" href="/css/styles.css"> -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> <!-- adds FontAwesome library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="/js/users.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <h1>User Login</h1>
+    <form id="new-user" action="/api/users" method="post">
+      <input type="text" name="username" value="" placeholder="Username">
+      <input type="text" name="email" value="" placeholder="Email">
+      <input type="password" name="password" value="" placeholder="Password">
+      <input type="text" name="firstName" value="" placeholder="First Name">
+      <input type="text" name="lastName" value="" placeholder="Last Name">
+      <input id="login-submit" type="submit" name="submit-form" value="Sign Up">
+    </form>
+  </body>
+</html>
