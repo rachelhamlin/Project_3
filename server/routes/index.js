@@ -3,7 +3,12 @@ var express = require('express'),
     router  = express.Router();
 
 router.get('/', function(req, res) {
-  res.render('index');
+  if(req.cookies.current_user) {
+    res.render('index');
+  } else {
+    res.render('profile');
+  }
+
 });
 
 
