@@ -81,6 +81,7 @@ function getPlaceResults(searchBox, map) {
       }
 
     // Same for the navigation bar
+      var navBar = $('#navigation');
       if (navBar.is(':visible')){
         closeNav();
       }
@@ -252,6 +253,19 @@ function openNav() {
   })
 }
 
+function toggleCategory() {
+  // TODO make AJAX calls to filter through places by category
+  var toggler = $('.cat-toggle')
+  toggler.clickToggle(function(){
+    $(this).removeClass('fa-toggle-on');
+    $(this).addClass('fa-toggle-off');
+  }, function(){
+    $(this).removeClass('fa-toggle-off');
+    $(this).addClass('fa-toggle-on');
+  })
+}
+
+
 function closeNav() {
   var navBar = $('#navigation');
   navBar.on('mouseleave', function(){
@@ -313,6 +327,7 @@ $(function(){
   resetLocation();
 
   openNav();
+  toggleCategory();
   closeNav();
 
   openProfile();
