@@ -24,7 +24,7 @@ usersRouter.post('/', function(req, res){
       console.log(dbUser);
       // res.render('profile', {user: dbUser});
       // res.redirect('http://localhost:8080');
-      res.login(dbUser, function(error){
+      req.login(dbUser, function(error){
         if(!error){
           res.redirect('http://localhost:8080');
         }
