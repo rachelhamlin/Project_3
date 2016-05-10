@@ -106,9 +106,42 @@ body {
   background-color: darkgray;
 }
 
+.profile-img {
+  position: absolute;
+  float: left;
+  top: 20%;
+  left: 90%;
+}
+
+.profile-img img {
+  max-height: 30px;
+  max-width: 30px;
+  border-radius: 10px;
+  background-color: black;
+}
+
+.profile-img img:hover {
+  cursor: pointer;
+}
+
 #map {
   position: absolute;
   height: 100%;
   width: 100%;
   z-index: 0;
+}
+
+.infowindow-expanded {
+  background-color: blue;
+  height: 100px;
+  width: 100%;
+}
+
+.notes {
+  height: 50px;
+  width: 80%;
+}
+
+.notes::-webkit-input-placeholder {
+  color: black;
 }
