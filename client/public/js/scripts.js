@@ -80,6 +80,11 @@ function getPlaceResults(searchBox, map) {
         closeProfile();
       }
 
+    // Same for the navigation bar
+      if (navBar.is(':visible')){
+        closeNav();
+      }
+
     var places = searchBox.getPlaces();
 
     if (places.length == 0) {
@@ -238,13 +243,33 @@ function savePlace(contentStr){
 };
 
 
-//// Opening Navigation Menu ////
+//// Opening & Interacting with Navigation Menu ////
+function openNav() {
+  var navButton = $('#hamburger-button');
+  navButton.on('mouseover', function(){
+    var navBar = $('#navigation');
+    navBar.slideDown();
+  })
+}
+
+function closeNav() {
+  var navBar = $('#navigation');
+  navBar.on('mouseleave', function(){
+    $(this).slideUp();
+  })
+}
 
 
 //// Opening & Editing Profile ////
 function openProfile() {
   var profileIcon = $('.profile-img');
   profileIcon.clickToggle(function(){
+    // Close navbar before loading results if it is open
+    var navBar = $('#navigation');
+    if (navBar.is(':visible')){
+      closeNav();
+    }
+
     var profile = $('#profile-container');
     profile.slideDown();
   }, function(){
@@ -286,6 +311,9 @@ $(function(){
 
   initMap();
   resetLocation();
+
+  openNav();
+  closeNav();
 
   openProfile();
   handleCloseButton();
