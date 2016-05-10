@@ -48,7 +48,9 @@ function initMap() {
 
   // Autocomplete search box within #search-term UI
   var input = document.getElementById('search-term');
+  console.log(input);
   var searchBox = new google.maps.places.SearchBox(input);
+  console.log("initial searchbox v1: " + searchBox);
 
   // Bias the searchBox results toward current map viewport
   map.addListener('bounds_changed', function(){
@@ -59,11 +61,16 @@ function initMap() {
   getPlaceResults(searchBox, map);
   updatePlaceResults(searchBox, map);
 
+  map.addListener('dragend', function(){
+    console.log('congrats you dragged it');
+    getPlaceResults(searchBox, map);
+  })
+
 }; // end InitMap
 
-
 function getPlaceResults(searchBox, map) {
-  // var markers = [];
+  var markers = [];
+  console.log(searchBox);
   // Listen for event fired when user selects a prediction and retrieve more details for that place
   searchBox.addListener('places_changed', function() {
     var places = searchBox.getPlaces();
@@ -78,9 +85,9 @@ function getPlaceResults(searchBox, map) {
     });
     markers = [];
 
-
     // Add new markers for each Place
     var bounds = new google.maps.LatLngBounds();
+    console.log("these are the first bounds: " + bounds);
     var infowindow = new google.maps.InfoWindow();
     places.forEach(function(place){
       var icon = {
@@ -110,10 +117,12 @@ function getPlaceResults(searchBox, map) {
             var contentStr = '<h5>'+place.name+'</h5><p>'+place.formatted_address;
             if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
             if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
-            contentStr += '<br>'+place.types+'</p>';
-            contentStr += '<button id="save-place">Save</button>';
+            contentStr += '<br><button id="save-place">Save</button>';
+            contentStr += '<div style="display:none;" class="infowindow-expanded">';
             infowindow.setContent(contentStr);
             infowindow.open(map,marker);
+
+            savePlace(infowindow);
           } else {
             var contentStr = "<h5>No Result, status="+status+"</h5>";
             infowindow.setContent(contentStr);
@@ -144,6 +153,7 @@ function updatePlaceResults(searchBox, map) {
     }
 
     var bounds = map.getBounds();
+    console.log("these are the second bounds: " + bounds);
     places.forEach(function(place){
       var icon = {
         url: place.icon,
@@ -161,9 +171,17 @@ function updatePlaceResults(searchBox, map) {
       })
 
       markers.push(marker);
+
+      if (place.geometry.viewport) {
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+
+    });
+    map.fitBounds(bounds);
   });
 
-  })
 } // end updatePlaceResults
 
 function resetLocation() {
@@ -180,10 +198,21 @@ function resetLocation() {
 
 
 //// Saving Places ////
-function savePlace(){
+function savePlace(contentStr){
   var saveButton = $('#save-place');
-  $(document).on('click', '#save-place', function(){
-    alert("Okay, saving!");
+  $(document).off().on('click', '#save-place', function(infowindow){
+    console.log('YO EXPAND')
+    var $notes         = ('<textarea class="notes" placeholder="Add notes">');
+    var $confirmButton = ('<button class="confirm">Add to favorites</button>');
+    var expandedArea   = $('.infowindow-expanded');
+
+    expandedArea.show();
+    saveButton.hide();
+    if (expandedArea.children().length === 0){
+      expandedArea.append($notes);
+      expandedArea.append($confirmButton);
+      console.log(expandedArea.children());
+    }
   })
 };
 
@@ -192,6 +221,5 @@ $(function(){
 
   initMap();
   resetLocation();
-  savePlace();
 
 })
