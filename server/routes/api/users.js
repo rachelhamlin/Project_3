@@ -1,4 +1,5 @@
 var express       = require('express');
+var path          = require('path');
 var usersRouter   = express.Router();
 
 var User          = require('../../models/user');
@@ -23,7 +24,7 @@ usersRouter.post('/', function(req, res){
       // res.render('/users/' + dbUser.id);
       // res.redirect('/');
       console.log(dbUser);
-      res.redirect('localhost:8080')
+      res.render('profile', {user: dbUser});
     }
   })
   // User.create( req.body.user, function(error, dbUser){

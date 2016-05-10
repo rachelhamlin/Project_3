@@ -4,16 +4,14 @@ var express       = require('express'),
 
 var User          = require('../models/user');
 
-profileRouter.get('/:id', function(req, res){
-  var id = req.params.id;
-  User.findById(id, function(error, response){
-    console.log(response);
-    if(error){
-      res.status(404).end();
-    } else {
-      res.render('profile');
-    }
-  })
+profileRouter.get('/', function(req, res){
+  var user = {};
+  if(req.cookies.current_user) {
+
+    user = JSON.parse(req.cookies.current_user);
+  }
+  console.log(user);
+  res.render('profile', { user: user });
 });
 
 module.exports = profileRouter;
