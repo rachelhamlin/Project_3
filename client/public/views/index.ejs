@@ -2,12 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Mobcats</title>
+    <title>Serchgey</title>
     <link rel="stylesheet" href="/css/styles.css">
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> <!-- adds FontAwesome library -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet"> <!-- adds FontAwesome library -->
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA2MtDTfBu8jQbwT0m2OAxLuG55VNt_8Q&libraries=places"></script>
+    <script src="/js/geolocation-marker.js"></script>
     <!-- TODO Update Maps URL with hidden key -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.1/js.cookie.min.js" charset="utf-8"></script>
+    <script src="semantic/dist/semantic.min.js"></script>
     <script src="/js/scripts.js" charset="utf-8"></script>
   </head>
   <body>
@@ -18,20 +22,57 @@
        <span></span>
        <span></span>
        <span></span>
-     </div>
+      </div>
 
-      <div id='logo'>MobCats</div>
+      <div id='logo'>Serchgey</div>
 
       <div class='box'>
-        <div class='container'>
+        <div class='search-container'>
           <input type='search' id='search-term' placeholder="Search for a location">
-          <button type='submit' class='icon'><i class='fa fa-search'></i></button>
+          <button type='submit' id='search-submit' class='icon'><i class='fa fa-search'></i></button>
+          <button type='submit' id='re-geolocate' class='icon'><i class='fa fa-location-arrow'></i></button>
         </div>
       </div>
 
+
+      <div class='profile-img'>
+        <img src='https://avatars2.githubusercontent.com/u/15470435?v=3&s=460'>
+      </div>
+
+
+   </div>
+
+   <div id='navigation' style='display:none;'>
+     <ul>
+       <div class='nav-heading'>
+         <h3>Sort</h3>
+       </div>
+         <li><i class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Restaurants</li>
+         <li><i class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Bars</li>
+         <li><i class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Coffee Shops</li>
+         <li><i class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Stores</li>
+         <li><i class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Movie Theaters</li>
+         <li><i class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Parks</li>
+         <li><i class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Museums</li>
+    </ul>
+    <ul>
+      <div class='nav-heading'>
+        <h3>My Lists</h3>
+      </div>
+        <li>Summer Patio Spots</li>
+        <li>Fancy Restaurants</li>
+        <li>Hidden Gems</li>
+        <li>Add List</li>
+   </ul>
+   </div>
+
+   <div id='profile-container' style='display:none;'>
+     <img src='https://avatars2.githubusercontent.com/u/15470435?v=3&s=460'>
+     <div id='close-profile'><p>^</p></div>
    </div>
 
     <div id='map'>
     </div>
+
   </body>
 </html>

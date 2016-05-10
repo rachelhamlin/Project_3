@@ -1,6 +1,7 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: helvetica neue;
 }
 
 #header {
@@ -19,6 +20,7 @@ body {
   top: 27%;
   position: absolute;
   left: 5%;
+  margin-right: 1%;
 }
 
 #hamburger-button > span {
@@ -36,16 +38,16 @@ body {
 }
 
 #logo {
-  font-family: helvetica neue;
   font-size: 1.5em;
   color: rgb(255,255,255);
   float: left;
   left: 7%;
   top: 20%;
   position: absolute;
+  margin-left: 1%;
 }
 
-.container {
+.search-container {
   position: absolute;
   float: left;
   top: 0;
@@ -57,12 +59,12 @@ body {
   white-space: nowrap;
 }
 
-.container #search-term{
-  width: 250px;
+.search-container #search-term{
+  width: 230px;
   height: 25px;
   background: rgb(240,128,128);
   border: none;
-  font-size: 10pt;
+  font-size: 11.49px;
   padding-left: 15px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -85,7 +87,7 @@ body {
    color: white;
 }
 
-.container button.icon {
+.search-container button.icon {
   outline: none;
   border: none;
   background: white;
@@ -95,9 +97,31 @@ body {
   border-radius: 2px;
 }
 
-.container button.icon:hover {
+.search-container button.icon:hover {
   cursor: pointer;
   background-color: gray;
+}
+
+.search-container button.icon:active {
+  background-color: darkgray;
+}
+
+.profile-img {
+  position: absolute;
+  float: left;
+  top: 20%;
+  left: 90%;
+}
+
+.profile-img img {
+  max-height: 30px;
+  max-width: 30px;
+  border-radius: 5px;
+  background-color: black;
+}
+
+.profile-img img:hover {
+  cursor: pointer;
 }
 
 #map {
@@ -105,4 +129,97 @@ body {
   height: 100%;
   width: 100%;
   z-index: 0;
+}
+
+.infowindow-expanded {
+  height: 100px;
+  width: 100%;
+}
+
+.notes {
+  height: 50px;
+  width: 90%;
+  outline: none;
+  resize: none;
+  overflow: auto;
+  border: 1px dashed gray;
+}
+
+.notes::-webkit-input-placeholder {
+  color: black;
+}
+
+#navigation {
+  width: 20%;
+  height: 93%;
+  position: absolute;
+  top: 7%;
+  background-color: rgb(250,50,70);
+  z-index: 1;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  color: rgb(255,255,255);
+}
+
+#navigation .nav-heading{
+  margin: 0;
+  left: 0;
+  padding-left: 3%
+}
+
+#navigation ul {
+  padding: 0 0 3% 0;
+  margin: 0;
+}
+
+#navigation li {
+  margin: 0;
+  padding-top: 5%;
+  padding-left: 3%;
+  list-style-type: none;
+  border-bottom: 1px solid rgb(220,20,60);
+  display: block;
+  width: 100%;
+}
+
+#navigation li:hover {
+  cursor: pointer;
+  background-color: rgb(220,20,60);
+}
+
+#navigation li:active {
+  background-color: rgb(220,60,70);
+}
+
+#profile-container {
+  background-color: rgba(128,128,128,.9);
+  width: 100%;
+  height: 93%;
+  top: 7%;
+  vertical-align: bottom;
+  position: absolute;
+  z-index: 1;
+}
+
+#profile-container img {
+  max-height: 100px;
+  max-width: 100px;
+  border-radius: 16px;
+  position: absolute;
+  left: 20%;
+  top: 10%;
+}
+
+#close-profile {
+  position: absolute;
+  font-size: 2.5rem;
+  color: rgb(50,50,50);
+  position: absolute;
+  left: 90.5%;
+  top: -7%;
+}
+
+#close-profile:hover {
+  cursor: pointer;
 }
