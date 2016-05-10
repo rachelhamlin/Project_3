@@ -124,6 +124,12 @@ body {
   cursor: pointer;
 }
 
+#logout-button {
+  position: absolute;
+  left: 95%;
+  top: 20%;
+}
+
 #map {
   position: absolute;
   height: 100%;
