@@ -59,7 +59,7 @@ function initMap() {
 
   // Pass Place function searchBox & map to get Place results
   getPlaceResults(searchBox, map);
-  updatePlaceResults(searchBox, map);
+  // updatePlaceResults(searchBox, map);
 
   map.addListener('dragend', function(){
     console.log('congrats you dragged it');
@@ -73,6 +73,13 @@ function getPlaceResults(searchBox, map) {
   console.log(searchBox);
   // Listen for event fired when user selects a prediction and retrieve more details for that place
   searchBox.addListener('places_changed', function() {
+
+    // Close profile before loading results if it is open
+      var profile = $('#profile-container');
+      if (profile.is(':visible')){
+        closeProfile();
+      }
+
     var places = searchBox.getPlaces();
 
     if (places.length == 0) {
@@ -117,7 +124,7 @@ function getPlaceResults(searchBox, map) {
             var contentStr = '<h5>'+place.name+'</h5><p>'+place.formatted_address;
             if (!!place.formatted_phone_number) contentStr += '<br>'+place.formatted_phone_number;
             if (!!place.website) contentStr += '<br><a target="_blank" href="'+place.website+'">'+place.website+'</a>';
-            contentStr += '<br><button id="save-place">Save</button>';
+            contentStr += '<br><button id="save-place">Add to favorites</button><br>';
             contentStr += '<div style="display:none;" class="infowindow-expanded">';
             infowindow.setContent(contentStr);
             infowindow.open(map,marker);
@@ -143,46 +150,46 @@ function getPlaceResults(searchBox, map) {
 }// end GetPlaceResults
 
 
-function updatePlaceResults(searchBox, map) {
-  map.addListener('dragend', function() {
-    console.log('congrats you dragged it');
-    var places = searchBox.getPlaces();
-
-    if (places.length == 0) {
-      return;
-    }
-
-    var bounds = map.getBounds();
-    console.log("these are the second bounds: " + bounds);
-    places.forEach(function(place){
-      var icon = {
-        url: place.icon,
-        size: new google.maps.Size(71,71),
-        origin: new google.maps.Point(0,0),
-        anchor: new google.maps.Point(17,34),
-        scaledSize: new google.maps.Size(20,20)
-      };
-
-      var marker = new google.maps.Marker({
-        map: map,
-        icon: icon,
-        title: place.name,
-        position: place.geometry.location
-      })
-
-      markers.push(marker);
-
-      if (place.geometry.viewport) {
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
-
-    });
-    map.fitBounds(bounds);
-  });
-
-} // end updatePlaceResults
+// function updatePlaceResults(searchBox, map) {
+//   map.addListener('dragend', function() {
+//     console.log('congrats you dragged it');
+//     var places = searchBox.getPlaces();
+//
+//     if (places.length == 0) {
+//       return;
+//     }
+//
+//     var bounds = map.getBounds();
+//     console.log("these are the second bounds: " + bounds);
+//     places.forEach(function(place){
+//       var icon = {
+//         url: place.icon,
+//         size: new google.maps.Size(71,71),
+//         origin: new google.maps.Point(0,0),
+//         anchor: new google.maps.Point(17,34),
+//         scaledSize: new google.maps.Size(20,20)
+//       };
+//
+//       var marker = new google.maps.Marker({
+//         map: map,
+//         icon: icon,
+//         title: place.name,
+//         position: place.geometry.location
+//       })
+//
+//       markers.push(marker);
+//
+//       if (place.geometry.viewport) {
+//         bounds.union(place.geometry.viewport);
+//       } else {
+//         bounds.extend(place.geometry.location);
+//       }
+//
+//     });
+//     map.fitBounds(bounds);
+//   });
+//
+// } // end updatePlaceResults
 
 function resetLocation() {
   var geoButton = $('#re-geolocate');
@@ -197,29 +204,90 @@ function resetLocation() {
 }; // end resetLocation
 
 
-//// Saving Places ////
+//// Saving Places (Add Notes and/or Add To List) ////
 function savePlace(contentStr){
   var saveButton = $('#save-place');
   $(document).off().on('click', '#save-place', function(infowindow){
     console.log('YO EXPAND')
-    var $notes         = ('<textarea class="notes" placeholder="Add notes">');
-    var $confirmButton = ('<button class="confirm">Add to favorites</button>');
-    var expandedArea   = $('.infowindow-expanded');
+    var $notes           = ('<textarea class="notes" placeholder="Add notes">');
+    var $dataListInput   = ('<input type="text" name="customList" list="customListName">');
+    var $dataList        = ('<datalist id="customListOptions"><option value="Summer Patio Spots">Summer Patio Spots</option></datalist><br>');
+    var $confirmButton   = ('<button class="confirm">Save</button>');
+    var $expandedArea     = $('.infowindow-expanded');
 
-    expandedArea.show();
+    // TODO grab data list Custom List options from user's data, if any exist
+    // <input type="text" name="customList" list="customListName"/>
+    //   <datalist id="customListName">
+    //       <option value="Summer Patio Spots">Summer Patio Spots</option>
+    //       <option value="Fancy Restaurants">Fancy Restaurants</option>
+    //       <option value="Hidden Gems">Hidden Gems</option>
+    //   </datalist>
+
+    // TODO add a cancelation / slideUp feature to this in case the person does NOT want to save the place
+
+    $expandedArea.show();
     saveButton.hide();
-    if (expandedArea.children().length === 0){
-      expandedArea.append($notes);
-      expandedArea.append($confirmButton);
-      console.log(expandedArea.children());
+    if ($expandedArea.children().length === 0){
+      $expandedArea.append($notes);
+      $expandedArea.append($dataListInput);
+      $expandedArea.append($dataList);
+      $expandedArea.append($confirmButton);
+      console.log($expandedArea.children());
     }
   })
 };
+
+
+//// Opening Navigation Menu ////
+
+
+//// Opening & Editing Profile ////
+function openProfile() {
+  var profileIcon = $('.profile-img');
+  profileIcon.clickToggle(function(){
+    var profile = $('#profile-container');
+    profile.slideDown();
+  }, function(){
+    closeProfile();
+  })
+}
+
+function handleCloseButton() {
+  var closeButton = $('#close-profile');
+  closeButton.click(function(){
+    closeProfile();
+  });
+}
+
+function closeProfile() {
+  var profile = $('#profile-container');
+  profile.slideUp();
+}
+
+
+//// Custom method because jQuery deprecated .toggle() ////
+$.fn.clickToggle = function(a, b) {
+    return this.each(function() {
+        var clicked = false;
+        $(this).click(function() {
+            if (clicked) {
+                clicked = false;
+                return b.apply(this, arguments);
+            }
+            clicked = true;
+            return a.apply(this, arguments);
+        });
+    });
+};
+
 
 // Run on document load
 $(function(){
 
   initMap();
   resetLocation();
+
+  openProfile();
+  handleCloseButton();
 
 })

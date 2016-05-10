@@ -47,7 +47,7 @@ body {
   margin-left: 1%;
 }
 
-.container {
+.search-container {
   position: absolute;
   float: left;
   top: 0;
@@ -59,7 +59,7 @@ body {
   white-space: nowrap;
 }
 
-.container #search-term{
+.search-container #search-term{
   width: 230px;
   height: 25px;
   background: rgb(240,128,128);
@@ -87,7 +87,7 @@ body {
    color: white;
 }
 
-.container button.icon {
+.search-container button.icon {
   outline: none;
   border: none;
   background: white;
@@ -97,12 +97,12 @@ body {
   border-radius: 2px;
 }
 
-.container button.icon:hover {
+.search-container button.icon:hover {
   cursor: pointer;
   background-color: gray;
 }
 
-.container button.icon:active {
+.search-container button.icon:active {
   background-color: darkgray;
 }
 
@@ -116,7 +116,7 @@ body {
 .profile-img img {
   max-height: 30px;
   max-width: 30px;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: black;
 }
 
@@ -132,16 +132,51 @@ body {
 }
 
 .infowindow-expanded {
-  background-color: blue;
   height: 100px;
   width: 100%;
 }
 
 .notes {
   height: 50px;
-  width: 80%;
+  width: 90%;
+  outline: none;
+  resize: none;
+  overflow: auto;
+  border: 1px dashed gray;
 }
 
 .notes::-webkit-input-placeholder {
   color: black;
+}
+
+#profile-container {
+  background-color: rgba(128,128,128,.9);
+  width: 100%;
+  height: 93%;
+  top: 7%;
+  vertical-align: bottom;
+  position: absolute;
+  z-index: 1;
+}
+
+#profile-container img {
+  max-height: 100px;
+  max-width: 100px;
+  border-radius: 16px;
+  position: absolute;
+  left: 20%;
+  top: 10%;
+}
+
+#close-profile {
+  position: absolute;
+  font-size: 2.5rem;
+  color: rgb(50,50,50);
+  position: absolute;
+  left: 90.5%;
+  top: -7%;
+}
+
+#close-profile:hover {
+  cursor: pointer;
 }
