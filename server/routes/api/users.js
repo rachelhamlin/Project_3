@@ -5,6 +5,10 @@ var jwt           = require('jsonwebtoken');
 
 var User          = require('../../models/user');
 
+// Experimental Fav stuff
+var Favorite      = require('../../models/favorite');
+// ----------------------
+
 var passport = require("../../lib/passportStrategy.js");
 
 usersRouter.post('/', function(req, res){
@@ -13,8 +17,24 @@ usersRouter.post('/', function(req, res){
     email:      req.body.email,
     password:   req.body.password,
     firstName:  req.body.firstName,
-    lastName:   req.body.lastName
+    lastName:   req.body.lastName,
+    // Experimental Fav stuff
+    favorites:  []
   });
+
+// Experimental Fav stuff
+  var newFavorite = Favorite({
+    name: "General Assembly",
+    place_id: "ChIJT3jEwaNZwokRS-hniJsDhDg",
+    type: "school",
+    lat: 40.73991760000001,
+    lng: -73.990166,
+    address: "4, 10 E 21st St, New York, NY 10010, United States"
+  });
+
+  newUser.favorites.push(newFavorite);
+
+// --------------------------
 
   newUser.save(function(error, dbUser){
     if(error){
@@ -30,8 +50,43 @@ usersRouter.post('/', function(req, res){
   })
 });
 
+usersRouter.put('/', function(req, res){
+
+  var newFavorite = Favorite({
+    name: req.body.name,
+    place_id: req.body.place_id,
+    type: req.body.type,
+    address: req.body.address,
+    lat: req.body.lat,
+    lng: req.body.lng
+  });
+
+  var cookiesUser = JSON.parse(req.cookies.current_user);
+  var query = { username: cookiesUser.username };
+  console.log(query);
+  User.findOne(query, {}, {}, function(error, user){
+    if(error){
+      console.log(error);
+    } else {
+      user.favorites.push(newFavorite);
+      user.save();
+      console.log(user);
+      res.json(newFavorite);
+    }
+  })
+  // User.findOne({ username: cookiesUser.username }, function(error, user){
+  //   // console.log(user);
+  //   // console.log(newFavorite);
+  //   user.favorites.push(newFavorite);
+  //   console.log(user.firstName + " " + user.lastName);
+  // });
+
+
+});
+
 // Routes about this line are not protected
 usersRouter.use(passport.authenticate('jwt', {session: false}));
+
 
 usersRouter.get('/', function(req, res){});
 

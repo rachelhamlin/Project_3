@@ -1,6 +1,9 @@
 var mongoose        = require('mongoose');
 var bcrypt          = require('bcryptjs');
 
+// var FavoriteModel   = mongoose.model('Favorite');
+var FavoriteModel = require('./favorite');
+
 var userSchema      = mongoose.Schema({
   username: {
     type: String,
@@ -24,12 +27,10 @@ var userSchema      = mongoose.Schema({
   lastName: {
     type: String
   },
-  // address: {
-  //   type: String  // This should be an array of 3 lines for formatted address
-  // },
-  // favorites: {
-  //   type: Array // Array of objects. Not sure how to implement this yet
-  // },
+  address: {
+    type: String  // This should be an array of 3 lines for formatted address
+  },
+  favorites: [FavoriteModel.schema],
   public: {
     type: Boolean, // Also not sure about this
     default: false
