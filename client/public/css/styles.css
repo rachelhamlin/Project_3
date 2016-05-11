@@ -71,19 +71,19 @@ body {
   border-radius: 5px;
 }
 
-.search-container::-webkit-input-placeholder {
+.search-container ::-webkit-input-placeholder {
    color: white;
 }
 
-.search-container:-moz-placeholder { /* Firefox 18- */
+.search-container :-moz-placeholder { /* Firefox 18- */
    color: white;
 }
 
-.search-container::-moz-placeholder {  /* Firefox 19+ */
+.search-container ::-moz-placeholder {  /* Firefox 19+ */
    color: white;
 }
 
-.search-container:-ms-input-placeholder {
+.search-container :-ms-input-placeholder {
    color: white;
 }
 
@@ -122,12 +122,6 @@ body {
 
 .profile-img img:hover {
   cursor: pointer;
-}
-
-#logout-button {
-  position: absolute;
-  left: 95%;
-  top: 20%;
 }
 
 #map {
@@ -198,6 +192,21 @@ body {
   background-color: rgb(220,60,70);
 }
 
+.menu-logout {
+  padding-left: 3%;
+}
+
+.menu-logout a {
+  text-decoration: none;
+  font-weight: bold;
+  color: rgb(255,255,255);
+}
+
+.menu-logout a:hover {
+  text-decoration: underline;
+  color: rgb(255,255,255);
+}
+
 #profile-container {
   background-color: rgba(128,128,128,.9);
   width: 100%;
@@ -232,12 +241,6 @@ body {
 
 
 /*Media Queries*/
-
-@media (max-width: 768px) {
-  #logout-button {
-    display: none;
-  }
-}
 
 @media (max-width: 577px) {
   .profile-img {
