@@ -82,9 +82,7 @@ function initMap() {
 //// Rendering markers for existing user favorites ////
 function renderFavorites() {
   var favorites = currentUser.favorites;
-  console.log(favorites);
   for (var i = 0; i < favorites.length; i++) {
-    console.log(favorites[i]);
     var favorite = favorites[i];
     addMarker(favorite);
   }
@@ -95,10 +93,27 @@ function addMarker(favorite) {
   var lng    = favorite.lng;
   var latlng = new google.maps.LatLng(lat, lng);
 
-  new google.maps.Marker({
+  var marker = new google.maps.Marker({
        position: latlng,
-       map: map
+       map: map,
    });
+
+   addFavoriteInfo(favorite, marker);
+}
+
+function addFavoriteInfo (favorite, marker) {
+  console.log(marker);
+  var infowindow = new google.maps.InfoWindow();
+  infowindow.setContent('boop');
+  marker.addListener('click', function(){
+    console.log('marker clicked');
+    infowindow.open(map, this);
+  })
+  var infowindow = new google.maps.InfoWindow();
+  var contentStr = '<h5>'+favorite.name+'</h5><p>'+favorite.address;
+  if (favorite.notes) contentStr += '<p>'+favorite.notes+'</p>';
+  contentStr += '<br><button id="delete-place">Remove from favorites</button><br>';
+  infowindow.setContent(contentStr);
 }
 
 function getNewFavorites(callback) {
