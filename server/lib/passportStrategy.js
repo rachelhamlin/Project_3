@@ -9,7 +9,7 @@ var User          = require('../models/user.js'),
 JwtOpts.jwtFromRequest = function(req) {
   var token = null;
   if (req && req.cookies) {
-      token = req.cookies['jwt_token'];
+      token = req.cookies['user_token'];
   }
   return token;
 };
@@ -23,7 +23,7 @@ JwtOpts.secretOrKey = process.env.JWT_SECRET;
 passport.use(new JwtStrategy(JwtOpts, function(jwt_payload, done) {
     console.log(jwt_payload);
 
-    User.findOne({id: jwt_payload.sub}, function(err, user) {
+    User.findOne({username: jwt_payload._doc.username}, function(err, user) {
         if (err) {
             return done(err, false);
         }
