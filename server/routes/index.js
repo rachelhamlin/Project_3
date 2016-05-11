@@ -3,7 +3,7 @@ var express = require('express'),
     router  = express.Router();
 
 var User    = require('../models/user');
-// Accessing User models in our Index router... IS THIS GHETTO CODE???
+
 var passport = require("../lib/passportStrategy");
 
 router.get('/', function(req, res) {
