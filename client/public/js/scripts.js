@@ -6,7 +6,9 @@ var initialLocation;
 var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
 var markers = [];
-var currentUser = JSON.parse(Cookies.get().current_user);
+var cookiesUser = JSON.parse(Cookies.get().current_user);
+var currentUser = getCurrentUser();
+
 
 // IRWIN CODE -- Global variable storing current place object. NOT VERY ELEGANT BUT... ¯\_(ツ)_/¯
 var currentPlace = {};
@@ -81,7 +83,7 @@ function initMap() {
 
 //// Rendering markers for existing user favorites ////
 function renderFavorites() {
-  var favorites = currentUser.favorites;
+  var favorites = cookiesUser.favorites;
   for (var i = 0; i < favorites.length; i++) {
     var favorite = favorites[i];
     addMarker(favorite);
@@ -123,15 +125,13 @@ function addFavoriteInfo (favorite, marker) {
   infowindow.setContent(contentStr);
 } // end addFavoriteInfo
 
-function getNewFavorites() {
-  console.log('get new favorites');
+function getCurrentUser() {
+  console.log('get current user');
   $.ajax({
-    url: '/api/users',
+    url: '/api/users/' + cookiesUser.username,
     method: 'get',
-    dataType: 'jsonp',
-    jsonp: 'jsonp',
-    success: function(responseData, status){
-      console.log(responseData);
+    success: function(user){
+      currentUser = user;
     }
   })
 }// end getNewFavorites
@@ -395,7 +395,6 @@ $(function(){
 
   initMap();
   renderFavorites();
-  getNewFavorites();
   resetLocation();
 
   controlNav();
