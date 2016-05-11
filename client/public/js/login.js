@@ -1,7 +1,23 @@
 console.log("Users.js loaded");
 
 //// Display Log In Form By Default ////
+function changeForm() {
+  var signupLink = $('#signup-link');
+  var signupForm = $('#sign-up-div');
 
+  var loginLink  = $('#login-link');
+  var loginForm  = $('#login-div');
+
+  signupLink.click(function(){
+    loginForm.hide();
+    signupForm.show();
+  })
+
+  loginLink.click(function(){
+    signupForm.hide();
+    loginForm.show();
+  })
+}
 
 
 //// Sign Up / Log In ////
@@ -69,6 +85,8 @@ $.fn.clickToggle = function(a, b) {
 
 
 $(function(){
+  changeForm();
+
   setSubmitHandler();
   setLoginHandler();
 });
