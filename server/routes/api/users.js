@@ -68,7 +68,7 @@ usersRouter.post('/', function(req, res){
   })
 });
 
-//watch this
+// Routes below this line are protected
 usersRouter.use(passport.authenticate('jwt', {session: false}));
 
 usersRouter.put('/', function(req, res){
@@ -106,9 +106,8 @@ usersRouter.put('/', function(req, res){
   })
 });
 
-// Routes about this line are not protected
+usersRouter.get('/', function(req, res){
 
-
-usersRouter.get('/', function(req, res){});
+});
 
 module.exports = usersRouter;
