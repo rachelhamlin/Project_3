@@ -1,0 +1,40 @@
+
+
+body {
+  background: #000000; /* fallback for old browsers */
+  background: -webkit-radial-gradient(circle, #BE5869 , rgb(220,60,70)); /* Chrome 10-25, Safari 5.1-6 */
+  background: radial-gradient(circle #BE5869 , rgb(220,60,70)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+#login-container {
+  background-color: rgba(0,0,0,.6);
+  padding: 10px 10px 20px 10px;
+  width: 350px;
+  border-radius: 3px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  text-align: center;
+}
+
+#login-container .prompt {
+  color: white;
+  font-weight: normal;
+}
+
+#login-form input, #new-user input {
+  width: 230px;
+  height: 25px;
+  background: rgb(255,255,255);
+  border: none;
+  font-size: 11.49px;
+  padding-left: 15px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin: 5px;
+}
