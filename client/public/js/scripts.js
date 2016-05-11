@@ -245,11 +245,13 @@ function savePlace(contentStr){
 
 
 //// Opening & Interacting with Navigation Menu ////
-function openNav() {
+function controlNav() {
   var navButton = $('#hamburger-button');
-  navButton.on('mouseover', function(){
-    var navBar = $('#navigation');
+  var navBar = $('#navigation');
+  navButton.clickToggle(function(){
     navBar.slideDown();
+  }, function(){
+    navBar.slideUp();
   })
 }
 
@@ -262,14 +264,6 @@ function toggleCategory() {
   }, function(){
     $(this).removeClass('fa-toggle-off');
     $(this).addClass('fa-toggle-on');
-  })
-}
-
-
-function closeNav() {
-  var navBar = $('#navigation');
-  navBar.on('mouseleave', function(){
-    $(this).slideUp();
   })
 }
 
@@ -305,7 +299,7 @@ function closeProfile() {
 
 //// Log Out ////
 function setLogoutHandler(){
-  $("#logout-button").click(function(e){
+  $("#logout-link").click(function(e){
     e.preventDefault();
     Cookies.remove('user_token');
     Cookies.remove('current_user');
@@ -336,9 +330,8 @@ $(function(){
   initMap();
   resetLocation();
 
-  openNav();
+  controlNav();
   toggleCategory();
-  closeNav();
 
   openProfile();
   handleCloseButton();
