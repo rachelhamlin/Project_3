@@ -10,7 +10,8 @@ var markers = [];
 function initMap() {
   console.log('initializing');
   var options = {
-    zoom: 16
+    zoom: 16,
+    maxZoom: 19
     // TODO style map for uniqueness
     // styles: [{
     //   stylers: [{ visibility: 'simplified' }]
@@ -100,9 +101,9 @@ function getPlaceResults(searchBox, map) {
 
     // Add new markers for each Place
     var bounds = new google.maps.LatLngBounds();
-    console.log("these are the first bounds: " + bounds);
     var infowindow = new google.maps.InfoWindow();
     places.forEach(function(place){
+
       var icon = {
         url: place.icon,
         size: new google.maps.Size(71,71),
