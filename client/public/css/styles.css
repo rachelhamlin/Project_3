@@ -229,3 +229,30 @@ body {
 #close-profile:hover {
   cursor: pointer;
 }
+
+
+/*Media Queries*/
+
+@media (max-width: 768px) {
+  #logout-button {
+    display: none;
+  }
+}
+
+@media (max-width: 577px) {
+  .profile-img {
+    display: none;
+  }
+}
+
+@media (max-width: 442px) {
+  .search-container {
+    display: none;
+  }
+}
+
+@media (max-width: 709px) {
+  #logo {
+    margin-left: 20px;
+  }
+}
