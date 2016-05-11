@@ -92,10 +92,17 @@ function addMarker(favorite) {
   var lat    = favorite.lat;
   var lng    = favorite.lng;
   var latlng = new google.maps.LatLng(lat, lng);
+  var icon = {
+    url: '/media/star_icon.png', // url
+    scaledSize: new google.maps.Size(25, 25), // scaled size
+    origin: new google.maps.Point(0,0), // origin
+    anchor: new google.maps.Point(0, 0) // anchor
+};
 
   var marker = new google.maps.Marker({
        position: latlng,
        map: map,
+       icon: icon
    });
 
    addFavoriteInfo(favorite, marker);
