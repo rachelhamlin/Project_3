@@ -74,19 +74,12 @@ function initMap() {
     sergeyIsTheBest();
   });
 
-  // Rendering markers for existing user favorites
-  // renderFavorites();
 
 }; // end InitMap
 
-// var currentUser = JSON.parse(Cookies.get().current_user);
-// var username = currentUser.username;
-// var userFavorites = currentUser.favorites;
-// console.log(currentUser);
-// console.log(username);
-// console.log(userFavorites);
 
 
+//// Rendering markers for existing user favorites ////
 function renderFavorites() {
   var favorites = currentUser.favorites;
   console.log(favorites);
@@ -107,7 +100,6 @@ function addMarker(favorite) {
        map: map
    });
 }
-
 
 function getNewFavorites(callback) {
   callback = callback || function(){};
@@ -227,7 +219,6 @@ function resetLocation() {
 
 //// Saving Places (Add Notes and/or Add To List) ////
 function savePlace(contentStr, place){
-  console.log("heyheyhey");
   console.log(place);
   currentPlace = place;
   var saveButton = $('#save-place');
