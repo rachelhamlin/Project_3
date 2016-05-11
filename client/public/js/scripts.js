@@ -16,16 +16,17 @@ function initMap() {
   console.log('initializing');
   var options = {
     zoom: 16,
-    maxZoom: 19
+    maxZoom: 19,
+    minZoom: 5
   };
   map = new google.maps.Map(document.getElementById('map'), options);
+  console.log(map.data);
   var geoMarker = new GeolocationMarker(map);
 
   if(navigator.geolocation) {
     browserSupportFlag = true;
     navigator.geolocation.getCurrentPosition(function(position) {
       initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-      console.log("You are here " + initialLocation);
       map.setCenter(initialLocation);
     }, function() {
       handleNoGeolocation(browserSupportFlag);
@@ -55,6 +56,11 @@ function initMap() {
   // Bias the searchBox results toward current map viewport
   map.addListener('bounds_changed', function(){
     searchBox.setBounds(map.getBounds());
+  })
+
+  map.addListener('click', function(e){
+    console.log("Clicked on map");
+    console.log(e.target);
   })
 
   // Pass Place function searchBox & map to get Place results
@@ -111,16 +117,15 @@ function addMarker(favorite) {
 function addFavoriteInfo (favorite, marker) {
   console.log(marker);
   var infowindow = new google.maps.InfoWindow();
-  infowindow.setContent('boop');
   marker.addListener('click', function(){
     console.log('marker clicked');
     infowindow.open(map, this);
+
+    var contentStr = '<h5>'+favorite.name+'</h5><p>'+favorite.address;
+    if (favorite.notes) contentStr += '<p>'+favorite.notes+'</p>';
+    contentStr += '<br><button id="delete-place">Remove from favorites</button><br>';
+    infowindow.setContent(contentStr);
   })
-  var infowindow = new google.maps.InfoWindow();
-  var contentStr = '<h5>'+favorite.name+'</h5><p>'+favorite.address;
-  if (favorite.notes) contentStr += '<p>'+favorite.notes+'</p>';
-  contentStr += '<br><button id="delete-place">Remove from favorites</button><br>';
-  infowindow.setContent(contentStr);
 } // end addFavoriteInfo
 
 function getNewFavorites() {
