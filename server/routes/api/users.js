@@ -27,12 +27,30 @@ usersRouter.post('/', function(req, res){
     name: "General Assembly",
     place_id: "ChIJT3jEwaNZwokRS-hniJsDhDg",
     type: "school",
-    lat: 40.73991760000001,
-    lng: -73.990166,
+    lat: 40.7400914,
+    lng: -73.9908452,
     address: "4, 10 E 21st St, New York, NY 10010, United States"
   });
 
-  newUser.favorites.push(newFavorite);
+  var secondFavorite = Favorite({
+    name: "Toby's Estate Coffee",
+    place_id: "ChIJHy0ZlqNZwokRABxBCQR_37o",
+    type: "cafe",
+    lat: 40.73991760000001,
+    lng: -73.990166,
+    address: "160 5th Ave, New York, NY 10010, United States"
+  });
+
+  var thirdFavorite = Favorite({
+    name: "BaoBurg",
+    place_id: "ChIJRZT7911ZwokRnsLwhRgjn7c",
+    type: "restaurant",
+    lat: 40.71783,
+    lng: -73.9596111,
+    address: "126 North 6th Street, Brooklyn"
+  });
+
+  newUser.favorites.push(newFavorite, secondFavorite, thirdFavorite);
 
 // --------------------------
 
