@@ -1,10 +1,10 @@
 console.log("Users.js loaded");
-$(function(){
-  setSubmitHandler();
-  setLoginHandler();
-  setLogoutHandler();
-});
 
+//// Display Log In Form By Default ////
+
+
+
+//// Sign Up / Log In ////
 function setSubmitHandler(){
   $("#new-user").submit(function(e){
     e.preventDefault();
@@ -52,24 +52,23 @@ function setLoginHandler(){
   })
 };
 
-function setLogoutHandler(){
-  $("#logout-button").click(function(e){
-    e.preventDefault();
-    Cookies.remove('user_token');
-    Cookies.remove('current_user');
-    location.reload();
-  })
-}
-// $(“#new-resource”).submit(function(e){
-// 	e.preventDefault();
-// 	$.ajax({ url: “/api/resources”,
-// 			method: “post”,
-// 			data: { name: $(“#new-resource”).find(“[name=name]”).val(),
-// 					age: $(“#new-resource”).find(“[name=age]”).val(),
-// 					color: $(“#new-resource”).find(“[name=color]”).val()
-// 				},
-// 			success: function(resource){
-// 				renderResource(resource);
-// 			}
-// 	});
-// });
+//// Custom method because jQuery deprecated .toggle() ////
+$.fn.clickToggle = function(a, b) {
+    return this.each(function() {
+        var clicked = false;
+        $(this).click(function() {
+            if (clicked) {
+                clicked = false;
+                return b.apply(this, arguments);
+            }
+            clicked = true;
+            return a.apply(this, arguments);
+        });
+    });
+};
+
+
+$(function(){
+  setSubmitHandler();
+  setLoginHandler();
+});

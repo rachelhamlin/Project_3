@@ -59,7 +59,7 @@ body {
   white-space: nowrap;
 }
 
-.search-container #search-term{
+.search-container #search-term {
   width: 230px;
   height: 25px;
   background: rgb(240,128,128);
@@ -71,23 +71,23 @@ body {
   border-radius: 5px;
 }
 
-::-webkit-input-placeholder {
+.search-container::-webkit-input-placeholder {
    color: white;
 }
 
-:-moz-placeholder { /* Firefox 18- */
+.search-container:-moz-placeholder { /* Firefox 18- */
    color: white;
 }
 
-::-moz-placeholder {  /* Firefox 19+ */
+.search-container::-moz-placeholder {  /* Firefox 19+ */
    color: white;
 }
 
-:-ms-input-placeholder {
+.search-container:-ms-input-placeholder {
    color: white;
 }
 
-.search-container button.icon {
+.search-container button.icon, #logout-button {
   outline: none;
   border: none;
   background: white;

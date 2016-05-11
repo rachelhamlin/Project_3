@@ -303,28 +303,7 @@ function closeProfile() {
   profile.slideUp();
 }
 
-//// Log In / Log Out ////
-function setLoginHandler(){
-  $("#login-form").submit(function(e){
-    e.preventDefault();
-    var payload = {
-      username:     $('#login-form').find('[name=username]').val(),
-      password:     $('#login-form').find('[name=password]').val()
-    };
-    $.ajax({
-      url:        '/api/auth',
-      method:     'post',
-      data:       payload,
-      success:    function(data){
-        Cookies.set('user_token', data.token);
-        Cookies.set('current_user', data.currentUser);
-        console.log(data);
-        location.reload();
-      }
-    })
-  })
-};
-
+//// Log Out ////
 function setLogoutHandler(){
   $("#logout-button").click(function(e){
     e.preventDefault();
@@ -333,7 +312,6 @@ function setLogoutHandler(){
     location.reload();
   })
 }
-
 
 
 //// Custom method because jQuery deprecated .toggle() ////
@@ -355,9 +333,6 @@ $.fn.clickToggle = function(a, b) {
 // Run on document load
 $(function(){
 
-  setLoginHandler();
-  setLogoutHandler();
-
   initMap();
   resetLocation();
 
@@ -367,5 +342,7 @@ $(function(){
 
   openProfile();
   handleCloseButton();
+
+  setLogoutHandler();
 
 })
