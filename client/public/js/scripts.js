@@ -103,10 +103,10 @@ function addMarker(favorite) {
        position: latlng,
        map: map,
        icon: icon
-   });
+       });
 
    addFavoriteInfo(favorite, marker);
-}
+} // end addMarker
 
 function addFavoriteInfo (favorite, marker) {
   console.log(marker);
@@ -121,18 +121,20 @@ function addFavoriteInfo (favorite, marker) {
   if (favorite.notes) contentStr += '<p>'+favorite.notes+'</p>';
   contentStr += '<br><button id="delete-place">Remove from favorites</button><br>';
   infowindow.setContent(contentStr);
-}
+} // end addFavoriteInfo
 
-function getNewFavorites(callback) {
-  callback = callback || function(){};
+function getNewFavorites() {
+  console.log('get new favorites');
   $.ajax({
-  url: '/',
-  success: function(data){
-    console.log(data);
-
+    url: '/api/users',
+    method: 'get',
+    dataType: 'jsonp',
+    jsonp: 'jsonp',
+    success: function(responseData, status){
+      console.log(responseData);
     }
   })
-}
+}// end getNewFavorites
 
 
 function getPlaceResults(searchBox, map) {
@@ -393,7 +395,7 @@ $(function(){
 
   initMap();
   renderFavorites();
-  // getNewFavorites();
+  getNewFavorites();
   resetLocation();
 
   controlNav();
