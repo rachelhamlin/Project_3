@@ -106,8 +106,12 @@ usersRouter.put('/', function(req, res){
   })
 });
 
-usersRouter.get('/', function(req, res){
-
+usersRouter.get('/:username', function(req, res){
+  var username = req.params.username;
+  var query = { username: username }
+  User.findOne(query, function(error, user){
+    res.json(user);
+  })
 });
 
 module.exports = usersRouter;
