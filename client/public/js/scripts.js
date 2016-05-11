@@ -364,7 +364,6 @@ function setConfirmHandler(){
       data: payload,
       success: function(data){
         console.log(data);
-        // Why doesn't this append work??
         var $li = $('<li>').text(data.name);
         $('#favorite-places').append($li);
         // Let's handle closing the info window after user clicks "confirm save button"
