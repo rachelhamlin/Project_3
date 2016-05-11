@@ -4,10 +4,17 @@ var express = require('express'),
 
 var User    = require('../models/user');
 // Accessing User models in our Index router... IS THIS GHETTO CODE???
+var passport = require("../lib/passportStrategy");
 
 router.get('/', function(req, res) {
   var currentUser = {};
   var theUser = {};
+  // if(req.user){
+  //   res.render('index', { current: req.user });
+  // } else {
+  //   res.render("login");
+  // }
+
   if(req.cookies.current_user) {
     currentUser = JSON.parse(req.cookies.current_user);
     var query = { username: currentUser.username };

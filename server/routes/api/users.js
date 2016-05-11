@@ -49,7 +49,8 @@ usersRouter.post('/', function(req, res){
       }
   })
 });
-
+//watch this
+usersRouter.use(passport.authenticate('jwt', {session: false}));
 usersRouter.put('/', function(req, res){
 
   var newFavorite = Favorite({
@@ -64,12 +65,14 @@ usersRouter.put('/', function(req, res){
   var cookiesUser = JSON.parse(req.cookies.current_user);
   var query = { username: cookiesUser.username };
   console.log(query);
-  User.findOne(query, {}, {}, function(error, user){
+  User.findOne(query, function(error, user){
     if(error){
       console.log(error);
     } else {
       user.favorites.push(newFavorite);
-      user.save();
+      user.save(function(error){
+        console.log(error);
+      });
       console.log(user);
       res.json(newFavorite);
     }
@@ -85,7 +88,6 @@ usersRouter.put('/', function(req, res){
 });
 
 // Routes about this line are not protected
-usersRouter.use(passport.authenticate('jwt', {session: false}));
 
 
 usersRouter.get('/', function(req, res){});

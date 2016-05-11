@@ -17,7 +17,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'client/public/views'));
 
 // Connect to local DB or Heroku DB
-mongoose.connect("mongodb://localhost/project_3");
+var db = process.env.MONGODB_URI || "mongodb://localhost/project_3"
+mongoose.connect(db);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
