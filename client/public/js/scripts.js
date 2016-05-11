@@ -16,10 +16,6 @@ function initMap() {
   var options = {
     zoom: 16,
     maxZoom: 19
-    // TODO style map for uniqueness
-    // styles: [{
-    //   stylers: [{ visibility: 'simplified' }]
-    // }]
   };
   map = new google.maps.Map(document.getElementById('map'), options);
   var geoMarker = new GeolocationMarker(map);
@@ -53,9 +49,7 @@ function initMap() {
 
   // Autocomplete search box within #search-term UI
   var input = document.getElementById('search-term');
-  console.log(input);
   var searchBox = new google.maps.places.SearchBox(input);
-  console.log("initial searchbox v1: " + searchBox);
 
   // Bias the searchBox results toward current map viewport
   map.addListener('bounds_changed', function(){
@@ -64,18 +58,55 @@ function initMap() {
 
   // Pass Place function searchBox & map to get Place results
   getPlaceResults(searchBox, map);
-  // updatePlaceResults(searchBox, map);
+
+  // Just in case anyone thinks otherwise, Sergey is the best
+  function sergeyIsTheBest() {
+    google.maps.event.trigger(input, 'focus');
+    google.maps.event.trigger(input, 'keydown', { keyCode: 13 });
+  }
 
   map.addListener('dragend', function(){
-    console.log('congrats you dragged it');
-    getPlaceResults(searchBox, map);
+    sergeyIsTheBest();
   })
+
+  $('#search-submit').click(function(){
+    sergeyIsTheBest();
+  });
+
+  // Rendering markers for existing user favorites
+  // renderFavorites();
 
 }; // end InitMap
 
+var currentUser = JSON.parse(Cookies.get().current_user);
+var username = currentUser.username;
+var userFavorites = currentUser.favorites;
+console.log(currentUser);
+console.log(username);
+console.log(userFavorites);
+
+function getAllFavorites(callback) {
+  callback = callback || function(){};
+  $.ajax({
+  url: '/',
+  success: function(data){
+    console.log(data);
+
+    }
+  })
+}
+
+
+// function renderFavorites() {
+//   for (var i = 0; i < currentUser.favorites.length; i++) {
+//     console.log("Im working");
+//     console.log(currentUser.favorites[i].name);
+// }
+
+
+
 function getPlaceResults(searchBox, map) {
   var markers = [];
-  console.log(searchBox);
   // Listen for event fired when user selects a prediction and retrieve more details for that place
   searchBox.addListener('places_changed', function() {
 
@@ -164,47 +195,6 @@ function getPlaceResults(searchBox, map) {
   })
 }// end GetPlaceResults
 
-
-// function updatePlaceResults(searchBox, map) {
-//   map.addListener('dragend', function() {
-//     console.log('congrats you dragged it');
-//     var places = searchBox.getPlaces();
-//
-//     if (places.length == 0) {
-//       return;
-//     }
-//
-//     var bounds = map.getBounds();
-//     console.log("these are the second bounds: " + bounds);
-//     places.forEach(function(place){
-//       var icon = {
-//         url: place.icon,
-//         size: new google.maps.Size(71,71),
-//         origin: new google.maps.Point(0,0),
-//         anchor: new google.maps.Point(17,34),
-//         scaledSize: new google.maps.Size(20,20)
-//       };
-//
-//       var marker = new google.maps.Marker({
-//         map: map,
-//         icon: icon,
-//         title: place.name,
-//         position: place.geometry.location
-//       })
-//
-//       markers.push(marker);
-//
-//       if (place.geometry.viewport) {
-//         bounds.union(place.geometry.viewport);
-//       } else {
-//         bounds.extend(place.geometry.location);
-//       }
-//
-//     });
-//     map.fitBounds(bounds);
-//   });
-//
-// } // end updatePlaceResults
 
 function resetLocation() {
   var geoButton = $('#re-geolocate');
@@ -373,6 +363,7 @@ function setConfirmHandler(){
 $(function(){
 
   initMap();
+  // getAllFavorites();
   resetLocation();
 
   controlNav();
