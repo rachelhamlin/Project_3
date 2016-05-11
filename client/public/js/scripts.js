@@ -7,7 +7,7 @@ var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
 var markers = [];
 var cookiesUser = JSON.parse(Cookies.get().current_user);
-var currentUser = getCurrentUser();
+// var currentUser = getCurrentUser();
 
 
 // IRWIN CODE -- Global variable storing current place object. NOT VERY ELEGANT BUT... ¯\_(ツ)_/¯
@@ -82,13 +82,13 @@ function initMap() {
 
 
 //// Rendering markers for existing user favorites ////
-function renderFavorites() {
-  var favorites = cookiesUser.favorites;
-  for (var i = 0; i < favorites.length; i++) {
-    var favorite = favorites[i];
-    addMarker(favorite);
-  }
-}
+// function renderFavorites() {
+//   var favorites = cookiesUser.favorites;
+//   for (var i = 0; i < favorites.length; i++) {
+//     var favorite = favorites[i];
+//     addMarker(favorite);
+//   }
+// }
 
 function addMarker(favorite) {
   var lat    = favorite.lat;
@@ -132,6 +132,7 @@ function getCurrentUser() {
     method: 'get',
     success: function(user){
       currentUser = user;
+
     }
   })
 }// end getNewFavorites
@@ -366,6 +367,9 @@ function setConfirmHandler(){
   $('.confirm').click(function(e){
     e.preventDefault();
 
+    // Grab notes
+    var notes = $('.notes').val();
+
     var payload = {
       name: currentPlace.name,
       place_id: currentPlace.place_id,
@@ -373,6 +377,7 @@ function setConfirmHandler(){
       address: currentPlace.formatted_address,
       lat: currentPlace.geometry.location.lat(),
       lng: currentPlace.geometry.location.lng(),
+      notes: notes
     };
     $.ajax({
       url: '/api/users',
@@ -382,6 +387,7 @@ function setConfirmHandler(){
         console.log(data);
         var $li = $('<li>').text(data.name);
         $('#favorite-places').append($li);
+        console.log(data.notes);
         // Let's handle closing the info window after user clicks "confirm save button"
       }
     });
@@ -394,7 +400,7 @@ function setConfirmHandler(){
 $(function(){
 
   initMap();
-  renderFavorites();
+  // renderFavorites();
   resetLocation();
 
   controlNav();

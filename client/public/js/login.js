@@ -54,15 +54,19 @@ function setLoginHandler(){
       username:     $('#login-form').find('[name=username]').val(),
       password:     $('#login-form').find('[name=password]').val()
     };
+
     $.ajax({
       url:        '/api/auth',
       method:     'post',
       data:       payload,
       success:    function(data){
-        Cookies.set('user_token', data.token);
-        Cookies.set('current_user', data.currentUser);
+        console.log("logged in!");
+        // Cookies.set("user_token", data.token);
+        document.cookie = "user_token=" + data.token; 
+        console.log(data.token);
+        Cookies.set("current_user", data.currentUser);
         console.log(data);
-        location.reload();
+        // location.reload();
       }
     })
   })

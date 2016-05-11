@@ -79,7 +79,8 @@ usersRouter.put('/', function(req, res){
     type: req.body.type,
     address: req.body.address,
     lat: req.body.lat,
-    lng: req.body.lng
+    lng: req.body.lng,
+    notes: req.body.notes
   });
 
   var cookiesUser = JSON.parse(req.cookies.current_user);
