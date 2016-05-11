@@ -6,7 +6,6 @@ var initialLocation;
 var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
 var markers = [];
-var currentUser = JSON.parse(Cookies.get().current_user);
 
 // IRWIN CODE -- Global variable storing current place object. NOT VERY ELEGANT BUT... ¯\_(ツ)_/¯
 var currentPlace = {};
@@ -15,8 +14,7 @@ var currentPlace = {};
 function initMap() {
   console.log('initializing');
   var options = {
-    zoom: 16,
-    maxZoom: 19
+    zoom: 16
   };
   map = new google.maps.Map(document.getElementById('map'), options);
   var geoMarker = new GeolocationMarker(map);
@@ -50,14 +48,23 @@ function initMap() {
 
   // Autocomplete search box within #search-term UI
   var input = document.getElementById('search-term');
+  console.log(input);
   var searchBox = new google.maps.places.SearchBox(input);
+  // console.log("initial searchbox v1: " + searchBox);
 
   // Bias the searchBox results toward current map viewport
+  // Play with the zoom settings here
   map.addListener('bounds_changed', function(){
     searchBox.setBounds(map.getBounds());
+    if (map.getZoom()>19) {
+      map.setZoom(19);
+    } else if (map.getZoom()<15) {
+      map.setZoom(15);
+    }
   })
 
   // Pass Place function searchBox & map to get Place results
+  console.log('on init, searchBox: '+ searchBox);
   getPlaceResults(searchBox, map);
 
   // Just in case anyone thinks otherwise, Sergey is the best
@@ -72,44 +79,18 @@ function initMap() {
 
   $('#search-submit').click(function(){
     sergeyIsTheBest();
-  });
-
-  // Rendering markers for existing user favorites
-  // renderFavorites();
+  })
 
 }; // end InitMap
 
-// var currentUser = JSON.parse(Cookies.get().current_user);
-// var username = currentUser.username;
-// var userFavorites = currentUser.favorites;
-// console.log(currentUser);
-// console.log(username);
-// console.log(userFavorites);
+var currentUser = JSON.parse(Cookies.get().current_user);
+var username = currentUser.username;
+var userFavorites = currentUser.favorites;
+console.log(currentUser);
+console.log(username);
+console.log(userFavorites);
 
-
-function renderFavorites() {
-  var favorites = currentUser.favorites;
-  console.log(favorites);
-  for (var i = 0; i < favorites.length; i++) {
-    console.log(favorites[i]);
-    var favorite = favorites[i];
-    addMarker(favorite);
-  }
-}
-
-function addMarker(favorite) {
-  var lat    = favorite.lat;
-  var lng    = favorite.lng;
-  var latlng = new google.maps.LatLng(lat, lng);
-
-  new google.maps.Marker({
-       position: latlng,
-       map: map
-   });
-}
-
-
-function getNewFavorites(callback) {
+function getAllFavorites(callback) {
   callback = callback || function(){};
   $.ajax({
   url: '/',
@@ -119,6 +100,14 @@ function getNewFavorites(callback) {
     }
   })
 }
+
+
+// function renderFavorites() {
+//   for (var i = 0; i < currentUser.favorites.length; i++) {
+//     console.log("Im working");
+//     console.log(currentUser.favorites[i].name);
+// }
+
 
 
 function getPlaceResults(searchBox, map) {
@@ -379,8 +368,7 @@ function setConfirmHandler(){
 $(function(){
 
   initMap();
-  renderFavorites();
-  // getNewFavorites();
+  // getAllFavorites();
   resetLocation();
 
   controlNav();
