@@ -51,7 +51,37 @@ usersRouter.post('/', function(req, res){
 });
 
 usersRouter.put('/', function(req, res){
-  console.log("worked");
+
+  var newFavorite = Favorite({
+    name: req.body.name,
+    place_id: req.body.place_id,
+    type: req.body.type,
+    address: req.body.address,
+    lat: req.body.lat,
+    lng: req.body.lng
+  });
+
+  var cookiesUser = JSON.parse(req.cookies.current_user);
+  var query = { username: cookiesUser.username };
+  console.log(query);
+  User.findOne(query, {}, {}, function(error, user){
+    if(error){
+      console.log(error);
+    } else {
+      user.favorites.push(newFavorite);
+      user.save();
+      console.log(user);
+      res.json(newFavorite);
+    }
+  })
+  // User.findOne({ username: cookiesUser.username }, function(error, user){
+  //   // console.log(user);
+  //   // console.log(newFavorite);
+  //   user.favorites.push(newFavorite);
+  //   console.log(user.firstName + " " + user.lastName);
+  // });
+
+
 });
 
 // Routes about this line are not protected

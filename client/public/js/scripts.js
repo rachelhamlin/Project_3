@@ -7,6 +7,10 @@ var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
 var markers = [];
 
+// IRWIN CODE -- Global variable storing current place object. NOT VERY ELEGANT BUT... ¯\_(ツ)_/¯
+var currentPlace = {};
+// END OF IRWIN CODE
+
 function initMap() {
   console.log('initializing');
   var options = {
@@ -87,6 +91,10 @@ function getPlaceResults(searchBox, map) {
       }
 
     var places = searchBox.getPlaces();
+    // Irwin - Experimenting
+    console.log("Irwin-Stuff");
+    console.log(places[0].geometry.location.lat());
+    // --------------------
 
     if (places.length == 0) {
       return;
@@ -135,7 +143,7 @@ function getPlaceResults(searchBox, map) {
             infowindow.setContent(contentStr);
             infowindow.open(map,marker);
 
-            savePlace(infowindow);
+            savePlace(infowindow, place);
           } else {
             var contentStr = "<h5>No Result, status="+status+"</h5>";
             infowindow.setContent(contentStr);
@@ -211,15 +219,20 @@ function resetLocation() {
 
 
 //// Saving Places (Add Notes and/or Add To List) ////
-function savePlace(contentStr){
+function savePlace(contentStr, place){
+  console.log("heyheyhey");
+  console.log(place);
+  currentPlace = place;
   var saveButton = $('#save-place');
   $(document).off().on('click', '#save-place', function(infowindow){
-    console.log('YO EXPAND')
+    console.log('YO EXPAND');
     var $notes           = ('<textarea class="notes" placeholder="Add notes">');
     var $dataListInput   = ('<input type="text" name="customList" list="customListName">');
     var $dataList        = ('<datalist id="customListOptions"><option value="Summer Patio Spots">Summer Patio Spots</option></datalist><br>');
     var $confirmButton   = ('<button class="confirm">Save</button>');
     var $expandedArea     = $('.infowindow-expanded');
+
+
 
     // TODO grab data list Custom List options from user's data, if any exist
     // <input type="text" name="customList" list="customListName"/>
@@ -239,6 +252,8 @@ function savePlace(contentStr){
       $expandedArea.append($dataList);
       $expandedArea.append($confirmButton);
       console.log($expandedArea.children());
+      // HANDLE CONFIRM SAVE BUTTON ACTION
+      setConfirmHandler(place);
     }
   })
 };
@@ -329,6 +344,36 @@ $.fn.clickToggle = function(a, b) {
     });
 };
 
+// IRWIN CODE -- Click Event Handler for CONFIRM SAVE BUTTON
+
+function setConfirmHandler(){
+  $('.confirm').click(function(e){
+    e.preventDefault();
+
+    var payload = {
+      name: currentPlace.name,
+      place_id: currentPlace.place_id,
+      type: currentPlace.types[0],
+      address: currentPlace.formatted_address,
+      lat: currentPlace.geometry.location.lat(),
+      lng: currentPlace.geometry.location.lng(),
+    };
+    $.ajax({
+      url: '/api/users',
+      method: 'put',
+      data: payload,
+      success: function(data){
+        console.log(data);
+        // Why doesn't this append work??
+        var $li = $('<li>').text(data.name);
+        $('#favorite-places').append($li);
+        // Let's handle closing the info window after user clicks "confirm save button"
+      }
+    });
+  })
+}
+
+// END OF IRWIN CODEEEEE
 
 // Run on document load
 $(function(){
