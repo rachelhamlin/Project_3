@@ -50,8 +50,13 @@ usersRouter.post('/', function(req, res){
   })
 });
 
+usersRouter.put('/', function(req, res){
+  console.log("worked");
+});
+
 // Routes about this line are not protected
 usersRouter.use(passport.authenticate('jwt', {session: false}));
+
 
 usersRouter.get('/', function(req, res){});
 
