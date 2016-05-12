@@ -7,13 +7,13 @@ var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
 var markers = [];
 var cookiesUser = JSON.parse(Cookies.get().current_user);
-// var currentUser = getCurrentUser();
-
+var currentUser = getCurrentUser();
 
 // IRWIN CODE -- Global variable storing current place object. NOT VERY ELEGANT BUT... ¯\_(ツ)_/¯
 var currentPlace = {};
 // END OF IRWIN CODE
 
+//// Create Google map on page load with autocomplete searchBox ////
 function initMap() {
   console.log('initializing');
   var options = {
@@ -22,8 +22,6 @@ function initMap() {
     minZoom: 5
   };
   map = new google.maps.Map(document.getElementById('map'), options);
-  console.log(map.data);
-  // console.log(google.maps.MapTypeStyleFeatureType);
   var geoMarker = new GeolocationMarker(map);
 
   if(navigator.geolocation) {
@@ -61,28 +59,29 @@ function initMap() {
     searchBox.setBounds(map.getBounds());
   })
 
-  map.addListener('click', function(e){
-    console.log("Clicked on map");
-    console.log(e.target);
-  })
-
-  // Pass Place function searchBox & map to get Place results
+  // Pass searchBox & map to get place results from user search input
   getPlaceResults(searchBox, map);
 
   // Just in case anyone thinks otherwise, Sergey is the best
+  // Sergey is the Best is a function that updates the Place results on map drag (see mapupdate.js)
   function sergeyIsTheBest() {
     google.maps.event.trigger(input, 'focus');
     google.maps.event.trigger(input, 'keydown', { keyCode: 13 });
+    google.maps.event.trigger(input, 'places_changed', searchBox);
   }
 
   map.addListener('dragend', function(){
     sergeyIsTheBest();
   })
 
-  console.log(google.maps.InfoWindow.prototype);
-  console.log($('.poi-info-window'));
-  // poi.append($('<button id="save-place">Add to favorites</button><br>'));
+  $('#search-submit').click(function(){
+    sergeyIsTheBest();
+  });
 
+  $('')
+
+
+  // Override info window prototype to include "add to favorites" button on built-in POIs
   var fx = google.maps.InfoWindow.prototype.setPosition;
   google.maps.InfoWindow.prototype.setPosition = function () {
     if (this.logAsInternal) {
@@ -90,7 +89,6 @@ function initMap() {
         var map = this.getMap();
         if (map) {
           google.maps.event.trigger(map, 'click', {content: this.getContent()});
-          console.log(this);
         }
       });
     }
@@ -99,13 +97,27 @@ function initMap() {
 
   google.maps.event.addListenerOnce(map,'click',function(e){
       var $infowindow = $(e.content);
+      console.log($infowindow);
       var $saveButton = $('<button id="save-place">Add to favorites</button>');
       $infowindow.append($saveButton);
-    })
+      $infowindow.append('<div style="display:none;" class="infowindow-expanded">')
 
-  $('#search-submit').click(function(){
-    sergeyIsTheBest();
-  });
+      $saveButton.click(function(){
+        var $notes           = ('<textarea class="notes" placeholder="Add notes">');
+        var $selectList      = ('<select id="customListOptions"><option value="Summer Patio Spots">Summer Patio Spots</option><option value="Fancy Restaurants">Fancy Restaurants</option></select><br>');
+        var $confirmButton   = ('<button class="confirm">Save</button>');
+        var $expandedArea    = $('.infowindow-expanded');
+
+        $expandedArea.show();
+        $saveButton.hide();
+        if ($expandedArea.children().length === 0){
+          $expandedArea.append($notes);
+          $expandedArea.append($selectList);
+          $expandedArea.append($confirmButton);
+        }
+      }) //submitSave
+
+    })
 
 }; // end InitMap
 
@@ -117,13 +129,15 @@ function getCurrentUser() {
     success: function(user){
       currentUser = user;
       renderFavorites(currentUser);
+      deleteFavorite(currentUser);
     }
   })
 } // end getCurrentUser
 
+
 //// Rendering markers for existing user favorites ////
 function renderFavorites(currentUser) {
-  console.log(currentUser);
+  console.log(currentUser.favorites);
   var favorites = currentUser.favorites;
   for (var i = 0; i < currentUser.favorites.length; i++) {
     var favorite = favorites[i];
@@ -145,26 +159,43 @@ function addMarker(favorite) {
   var marker = new google.maps.Marker({
        position: latlng,
        map: map,
-       icon: icon
+       icon: icon,
        });
 
    addFavoriteInfo(favorite, marker);
-} // end addMarker
+}
 
 //// Pop up an infoWindow when a favorite is clicked ////
 function addFavoriteInfo (favorite, marker) {
-  console.log(marker);
   var infowindow = new google.maps.InfoWindow();
   marker.addListener('click', function(){
     infowindow.open(map, this);
-
+    console.log(favorite._id);
     var contentStr = '<h5>'+favorite.name+'</h5><p>'+favorite.address;
     if (favorite.notes) contentStr += '<p>'+favorite.notes+'</p>';
     contentStr += '<br><button id="delete-place">Remove from favorites</button><br>';
     infowindow.setContent(contentStr);
+    deleteFavorite(favorite._id);
   })
-} // end addFavoriteInfo
+}
 
+//// Delete a favorite ////
+function deleteFavorite(favoriteId) {
+  var favoriteId = favoriteId;
+  console.log(favoriteId);
+  // var favorite = ( currentUser.favorites( 'place_id' ) )
+  // console.log(favorite);
+  $(document).off().on('click', '#delete-place', function(infowindow){
+    $.ajax({
+      url: '/api/favorite/' + favoriteId,
+      method: 'delete',
+      // data: {id: favoriteId},
+      success: function(data){
+        console.log(data);
+      }
+    })
+  })
+}
 
 //// Load Google Places search results ////
 function getPlaceResults(searchBox, map) {
@@ -238,6 +269,8 @@ function getPlaceResults(searchBox, map) {
             infowindow.open(map,marker);
 
             savePlace(infowindow, place);
+
+
           } else {
             var contentStr = "<h5>No Result, status="+status+"</h5>";
             infowindow.setContent(contentStr);
@@ -278,12 +311,9 @@ function savePlace(contentStr, place){
   var saveButton = $('#save-place');
   $(document).off().on('click', '#save-place', function(infowindow){
     var $notes           = ('<textarea class="notes" placeholder="Add notes">');
-    var $dataListInput   = ('<input type="text" name="customList" list="customListName">');
-    var $dataList        = ('<datalist id="customListOptions"><option value="Summer Patio Spots">Summer Patio Spots</option></datalist><br>');
+    var $selectList      = ('<select id="customListOptions"><option value="Summer Patio Spots">Summer Patio Spots</option><option value="Fancy Restaurants">Fancy Restaurants</option></select><br>');
     var $confirmButton   = ('<button class="confirm">Save</button>');
-    var $expandedArea     = $('.infowindow-expanded');
-
-
+    var $expandedArea    = $('.infowindow-expanded');
 
     // TODO grab data list Custom List options from user's data, if any exist
     // <input type="text" name="customList" list="customListName"/>
@@ -299,15 +329,42 @@ function savePlace(contentStr, place){
     saveButton.hide();
     if ($expandedArea.children().length === 0){
       $expandedArea.append($notes);
-      $expandedArea.append($dataListInput);
-      $expandedArea.append($dataList);
+      $expandedArea.append($selectList);
       $expandedArea.append($confirmButton);
-      console.log($expandedArea.children());
       // HANDLE CONFIRM SAVE BUTTON ACTION
       setConfirmHandler(place);
     }
   })
 };
+
+// IRWIN CODE -- store place data as a new favorite in the user's db record on confirm
+function setConfirmHandler(){
+  $('.confirm').click(function(e){
+    e.preventDefault();
+
+    var payload = {
+      name: currentPlace.name,
+      place_id: currentPlace.place_id,
+      type: currentPlace.types[0],
+      address: currentPlace.formatted_address,
+      lat: currentPlace.geometry.location.lat(),
+      lng: currentPlace.geometry.location.lng(),
+    };
+    $.ajax({
+      url: '/api/users',
+      method: 'put',
+      data: payload,
+      success: function(data){
+        console.log(data);
+        var $li = $('<li>').text(data.name);
+        $('#favorite-places').append($li);
+        // Let's handle closing the info window after user clicks "confirm save button"
+      }
+    });
+    getCurrentUser();
+  })
+}
+// END OF IRWIN CODEEEEE
 
 
 //// Opening & Interacting with Navigation Menu ////
@@ -389,40 +446,10 @@ $.fn.clickToggle = function(a, b) {
     });
 };
 
-function setConfirmHandler(){
-  $('.confirm').click(function(e){
-    e.preventDefault();
-
-    // Grab notes
-    var notes = $('.notes').val();
-
-    var payload = {
-      name: currentPlace.name,
-      place_id: currentPlace.place_id,
-      type: currentPlace.types[0],
-      address: currentPlace.formatted_address,
-      lat: currentPlace.geometry.location.lat(),
-      lng: currentPlace.geometry.location.lng(),
-      notes: notes
-    };
-    $.ajax({
-      url: '/api/users',
-      method: 'put',
-      data: payload,
-      success: function(data){
-        console.log(data);
-        var $li = $('<li>').text(data.name);
-        $('#favorite-places').append($li);
-        console.log(data.notes);
-        // Let's handle closing the info window after user clicks "confirm save button"
-      }
-    });
-    getCurrentUser();
-  })
-}
-
 // Run on document load
 $(function(){
+
+  deleteFavorite();
 
   initMap();
   resetLocation();
