@@ -129,7 +129,6 @@ function getCurrentUser() {
     success: function(user){
       currentUser = user;
       renderFavorites(currentUser);
-      deleteFavorite(currentUser);
     }
   })
 } // end getCurrentUser
@@ -181,17 +180,14 @@ function addFavoriteInfo (favorite, marker) {
 
 //// Delete a favorite ////
 function deleteFavorite(favoriteId) {
-  var favoriteId = favoriteId;
   console.log(favoriteId);
-  // var favorite = ( currentUser.favorites( 'place_id' ) )
-  // console.log(favorite);
   $(document).off().on('click', '#delete-place', function(infowindow){
     $.ajax({
       url: '/api/favorite/' + favoriteId,
       method: 'delete',
-      // data: {id: favoriteId},
       success: function(data){
         console.log(data);
+        getCurrentUser();
       }
     })
   })

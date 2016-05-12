@@ -17,7 +17,7 @@ favoritesRouter.delete('/:id', function(req, res) {
   var query = { username: cookiesUser.username };
   var id = req.params.id;
 
-  User.update(query, {$pull: {"favorites": id}}, function(error,data){
+  User.update(query, {$pull: {"favorites": { _id: id} }}, function(error,data){
     if(error){
       console.log(error);
     } else {
