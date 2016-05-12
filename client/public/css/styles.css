@@ -242,6 +242,7 @@ body {
 
 /*Media Queries*/
 
+/* For web*/
 @media (max-width: 577px) {
   .profile-img {
     display: none;
@@ -258,4 +259,21 @@ body {
   #logo {
     margin-left: 20px;
   }
+}
+
+/*For iPhone*/
+@media only screen
+  and (min-device-width: 320px)
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+    .profile-img {
+      display: none;
+    },
+    #logo {
+      display: none;
+    },
+    #hamburger-button {
+      display: none;
+    }
 }
