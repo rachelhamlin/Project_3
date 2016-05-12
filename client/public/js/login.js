@@ -58,9 +58,15 @@ function setLoginHandler(){
       method:     'post',
       data:       payload,
       success:    function(data){
-        console.log("Successful log in");
+        console.log("Successful login");
         Cookies.set("user_token", data.token);
-        Cookies.set("current_user", data.currentUser);
+
+        // data.currentUser is starting to get too large to store in a cookie
+        // temporarily trying to store just the username in the cookie instead
+        // of the entire User object
+        var cookieUser = {username: data.currentUser.username};
+        Cookies.set("current_user", cookieUser);
+        // Cookies.set("current_user", data.currentUser);
         location.reload();
       }
     });

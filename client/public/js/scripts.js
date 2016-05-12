@@ -7,11 +7,9 @@ var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
 var markers = [];
 var cookiesUser = JSON.parse(Cookies.get().current_user);
-var currentUser = getCurrentUser();
-
-// IRWIN CODE -- Global variable storing current place object. NOT VERY ELEGANT BUT... ¯\_(ツ)_/¯
+//  Global variables storing current user and current place objects. NOT VERY ELEGANT BUT... ¯\_(ツ)_/¯
+var currentUser = {};
 var currentPlace = {};
-// END OF IRWIN CODE
 
 //// Create Google map on page load with autocomplete searchBox ////
 function initMap() {
@@ -128,19 +126,18 @@ function getCurrentUser() {
     method: 'get',
     success: function(user){
       currentUser = user;
-      renderFavorites(currentUser);
+      renderFavorites();
     }
   })
 } // end getCurrentUser
 
 
 //// Rendering markers for existing user favorites ////
-function renderFavorites(currentUser) {
+function renderFavorites() {
   console.log(currentUser.favorites);
   var favorites = currentUser.favorites;
   for (var i = 0; i < currentUser.favorites.length; i++) {
-    var favorite = favorites[i];
-    addMarker(favorites[i]);
+    addMarker(currentUser.favorites[i]);
   }
 }
 
@@ -457,5 +454,6 @@ $(function(){
   handleCloseButton();
 
   setLogoutHandler();
+  getCurrentUser();
 
 })
