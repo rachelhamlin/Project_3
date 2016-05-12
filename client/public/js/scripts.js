@@ -182,9 +182,9 @@ function deleteFavorite(favoriteId) {
     $.ajax({
       url: '/api/favorite/' + favoriteId,
       method: 'delete',
-      // data: {id: favoriteId},
       success: function(data){
         console.log(data);
+        getCurrentUser();
       }
     })
   })
