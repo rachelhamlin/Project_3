@@ -250,10 +250,6 @@ function getPlaceResults(searchBox, map) {
             infowindow.open(map,marker);
 
             savePlace(infowindow, place);
-            //
-            // var payload = {
-            //   name: place.name
-            // }
 
 
           } else {
@@ -323,7 +319,7 @@ function savePlace(contentStr, place){
 };
 
 
-// IRWIN CODE -- Click Event Handler for CONFIRM SAVE BUTTON
+// IRWIN CODE -- store place data as a new favorite in the user's db record on confirm
 function setConfirmHandler(){
   $('.confirm').click(function(e){
     e.preventDefault();
