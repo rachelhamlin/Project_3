@@ -61,8 +61,10 @@ function setLoginHandler(){
       success:    function(data){
         Cookies.set('user_token', data.token);
         Cookies.set('current_user', data.currentUser);
-        console.log(data);
-        location.reload();
+        console.log(data.currentUser);
+        console.log(data.token);
+        // console.log(data);
+        // location.reload();
       }
     })
   })
