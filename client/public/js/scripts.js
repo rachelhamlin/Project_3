@@ -7,7 +7,7 @@ var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
 var markers = [];
 var cookiesUser = JSON.parse(Cookies.get().current_user);
-var currentUser = getCurrentUser();
+// var currentUser = getCurrentUser();
 
 
 // IRWIN CODE -- Global variable storing current place object. NOT VERY ELEGANT BUT... ¯\_(ツ)_/¯
@@ -389,11 +389,12 @@ $.fn.clickToggle = function(a, b) {
     });
 };
 
-// IRWIN CODE -- Click Event Handler for CONFIRM SAVE BUTTON
-
 function setConfirmHandler(){
   $('.confirm').click(function(e){
     e.preventDefault();
+
+    // Grab notes
+    var notes = $('.notes').val();
 
     var payload = {
       name: currentPlace.name,
@@ -402,6 +403,7 @@ function setConfirmHandler(){
       address: currentPlace.formatted_address,
       lat: currentPlace.geometry.location.lat(),
       lng: currentPlace.geometry.location.lng(),
+      notes: notes
     };
     $.ajax({
       url: '/api/users',
@@ -411,14 +413,13 @@ function setConfirmHandler(){
         console.log(data);
         var $li = $('<li>').text(data.name);
         $('#favorite-places').append($li);
+        console.log(data.notes);
         // Let's handle closing the info window after user clicks "confirm save button"
       }
     });
     getCurrentUser();
   })
 }
-
-// END OF IRWIN CODEEEEE
 
 // Run on document load
 $(function(){
