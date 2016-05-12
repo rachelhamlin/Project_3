@@ -3,13 +3,11 @@ var path          = require('path');
 var usersRouter   = express.Router();
 var jwt           = require('jsonwebtoken');
 
+// Require models
 var User          = require('../../models/user');
-
-// Experimental Fav stuff
 var Favorite      = require('../../models/favorite');
-// ----------------------
 
-var passport = require("../../lib/passportStrategy.js");
+var passport      = require("../../lib/passportStrategy.js");
 
 usersRouter.post('/', function(req, res){
   var newUser = User({
@@ -18,11 +16,10 @@ usersRouter.post('/', function(req, res){
     password:   req.body.password,
     firstName:  req.body.firstName,
     lastName:   req.body.lastName,
-    // Experimental Fav stuff
     favorites:  []
   });
 
-// Experimental Fav stuff
+// Adding a few favorites manually for development purposes
   var newFavorite = Favorite({
     name: "General Assembly",
     place_id: "ChIJT3jEwaNZwokRS-hniJsDhDg",
@@ -51,7 +48,6 @@ usersRouter.post('/', function(req, res){
   });
 
   newUser.favorites.push(newFavorite, secondFavorite, thirdFavorite);
-
 // --------------------------
 
   newUser.save(function(error, dbUser){
@@ -68,7 +64,8 @@ usersRouter.post('/', function(req, res){
   })
 });
 
-// Routes below this line are protected
+//  *** Routes below this line are protected ***
+//  *** H4CK3R$ NOT ALLOWED PAST THIS POINT ***
 usersRouter.use(passport.authenticate('jwt', {session: false}));
 
 usersRouter.put('/', function(req, res){
@@ -85,19 +82,8 @@ usersRouter.put('/', function(req, res){
 
   var cookiesUser = JSON.parse(req.cookies.current_user);
   var query = { username: cookiesUser.username };
-  console.log(query);
-  // User.findOne(query, function(error, user){
-  //   if(error){
-  //     console.log(error);
-  //   } else {
-  //     user.favorites.push(newFavorite);
-  //     user.save(function(error){
-  //       console.log(error);
-  //     });
-  //     console.log(user);
-  //     res.json(newFavorite);
-  //   }
-  // })
+
+  // Update User based on query with new Favorite
   User.update(query, {$push: {"favorites": newFavorite}}, function(error, user){
     if(error){
       console.log(error);
