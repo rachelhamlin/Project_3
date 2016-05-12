@@ -23,6 +23,7 @@ function initMap() {
   };
   map = new google.maps.Map(document.getElementById('map'), options);
   console.log(map.data);
+  // console.log(google.maps.MapTypeStyleFeatureType);
   var geoMarker = new GeolocationMarker(map);
 
   if(navigator.geolocation) {
@@ -78,21 +79,55 @@ function initMap() {
     sergeyIsTheBest();
   })
 
+  console.log(google.maps.InfoWindow.prototype);
+  console.log($('.poi-info-window'));
+  // poi.append($('<button id="save-place">Add to favorites</button><br>'));
+
+  var fx = google.maps.InfoWindow.prototype.setPosition;
+  google.maps.InfoWindow.prototype.setPosition = function () {
+    if (this.logAsInternal) {
+      google.maps.event.addListenerOnce(this, 'map_changed',function(){
+        var map = this.getMap();
+        if (map) {
+          google.maps.event.trigger(map, 'click', {content: this.getContent()});
+          console.log(this);
+        }
+      });
+    }
+    fx.apply(this,arguments);
+  }
+
+  google.maps.event.addListenerOnce(map,'click',function(e){
+      var $infowindow = $(e.content);
+      var $saveButton = $('<button id="save-place">Add to favorites</button>');
+      $infowindow.append($saveButton);
+    })
+
   $('#search-submit').click(function(){
     sergeyIsTheBest();
   });
 
-
 }; // end InitMap
 
-
+//// Get data for the logged in user ////
+function getCurrentUser() {
+  $.ajax({
+    url: '/api/users/' + cookiesUser.username,
+    method: 'get',
+    success: function(user){
+      currentUser = user;
+      renderFavorites(currentUser);
+    }
+  })
+} // end getCurrentUser
 
 //// Rendering markers for existing user favorites ////
-function renderFavorites() {
-  var favorites = cookiesUser.favorites;
-  for (var i = 0; i < favorites.length; i++) {
+function renderFavorites(currentUser) {
+  console.log(currentUser);
+  var favorites = currentUser.favorites;
+  for (var i = 0; i < currentUser.favorites.length; i++) {
     var favorite = favorites[i];
-    addMarker(favorite);
+    addMarker(favorites[i]);
   }
 }
 
@@ -116,11 +151,11 @@ function addMarker(favorite) {
    addFavoriteInfo(favorite, marker);
 } // end addMarker
 
+//// Pop up an infoWindow when a favorite is clicked ////
 function addFavoriteInfo (favorite, marker) {
   console.log(marker);
   var infowindow = new google.maps.InfoWindow();
   marker.addListener('click', function(){
-    console.log('marker clicked');
     infowindow.open(map, this);
 
     var contentStr = '<h5>'+favorite.name+'</h5><p>'+favorite.address;
@@ -130,18 +165,8 @@ function addFavoriteInfo (favorite, marker) {
   })
 } // end addFavoriteInfo
 
-function getCurrentUser() {
-  console.log('get current user');
-  $.ajax({
-    url: '/api/users/' + cookiesUser.username,
-    method: 'get',
-    success: function(user){
-      currentUser = user;
-    }
-  })
-}// end getNewFavorites
 
-
+//// Load Google Places search results ////
 function getPlaceResults(searchBox, map) {
   var markers = [];
   // Listen for event fired when user selects a prediction and retrieve more details for that place
@@ -252,7 +277,6 @@ function savePlace(contentStr, place){
   currentPlace = place;
   var saveButton = $('#save-place');
   $(document).off().on('click', '#save-place', function(infowindow){
-    console.log('YO EXPAND');
     var $notes           = ('<textarea class="notes" placeholder="Add notes">');
     var $dataListInput   = ('<input type="text" name="customList" list="customListName">');
     var $dataList        = ('<datalist id="customListOptions"><option value="Summer Patio Spots">Summer Patio Spots</option></datalist><br>');
@@ -390,6 +414,7 @@ function setConfirmHandler(){
         // Let's handle closing the info window after user clicks "confirm save button"
       }
     });
+    getCurrentUser();
   })
 }
 
@@ -399,7 +424,6 @@ function setConfirmHandler(){
 $(function(){
 
   initMap();
-  renderFavorites();
   resetLocation();
 
   controlNav();
