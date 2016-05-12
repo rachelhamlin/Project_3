@@ -187,15 +187,15 @@ function deleteFavorite(favoriteId) {
   // console.log(favorite);
   $(document).off().on('click', '#delete-place', function(infowindow){
     $.ajax({
-      url: '/api/users',
+      url: '/api/favorite/' + favoriteId,
       method: 'delete',
-      data: {id: favoriteId},
+      // data: {id: favoriteId},
       success: function(data){
         console.log(data);
       }
     })
-  }) // end click function
-} // end deleteFavorite
+  })
+}
 
 //// Load Google Places search results ////
 function getPlaceResults(searchBox, map) {

@@ -12,11 +12,12 @@ var Favorite      = require('../../models/favorite');
 var passport = require("../../lib/passportStrategy.js");
 
 
-favoritesRouter.delete('/:place_id', function(req, res) {
-  var cookiesUser = JSON.parse(req.cookies.current_user);
+favoritesRouter.delete('/:id', function(req, res) {
+  cookiesUser = JSON.parse(req.cookies.current_user);
   var query = { username: cookiesUser.username };
+  var id = req.params.id;
 
-  User.update(query, {$pull: {"favorites": _id}}, function(error,data){
+  User.update(query, {$pull: {"favorites": id}}, function(error,data){
     if(error){
       console.log(error);
     } else {
@@ -24,3 +25,5 @@ favoritesRouter.delete('/:place_id', function(req, res) {
     }
   })
 });
+
+module.exports = favoritesRouter;

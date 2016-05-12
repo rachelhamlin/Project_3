@@ -28,11 +28,11 @@ app.use(express.static('client/public'));
 // Routing
 var indexRouter        = require('./server/routes/index.js');
 var apiUsersRouter     = require('./server/routes/api/users.js');
-// var apiFavoritesRouter = require('./server/routes/api/favorites.js');
+var apiFavoritesRouter = require('./server/routes/api/favorite.js');
 var apiAuthRouter      = require('./server/routes/api/auth.js');
 
 app.use('/', indexRouter);
-// app.use('/api/favorites', apiFavoritesRouter);
+app.use('/api/favorite', apiFavoritesRouter);
 app.use('/api/users', apiUsersRouter);
 app.use('/api/auth', apiAuthRouter);
 
