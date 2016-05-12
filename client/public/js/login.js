@@ -19,7 +19,6 @@ function changeForm() {
   })
 }
 
-
 //// Sign Up / Log In ////
 function setSubmitHandler(){
   $("#new-user").submit(function(e){
@@ -40,7 +39,6 @@ function setSubmitHandler(){
       success: function(data){
         Cookies.set('user_token', data.token);
         Cookies.set('current_user', data.currentUser);
-        console.log(data);
         location.reload();
       }
     });
@@ -54,18 +52,19 @@ function setLoginHandler(){
       username:     $('#login-form').find('[name=username]').val(),
       password:     $('#login-form').find('[name=password]').val()
     };
+
     $.ajax({
       url:        '/api/auth',
       method:     'post',
       data:       payload,
       success:    function(data){
-        Cookies.set('user_token', data.token);
-        Cookies.set('current_user', data.currentUser);
-        console.log(data);
+        console.log("Successful log in");
+        Cookies.set("user_token", data.token);
+        Cookies.set("current_user", data.currentUser);
         location.reload();
       }
-    })
-  })
+    });
+  });
 };
 
 //// Custom method because jQuery deprecated .toggle() ////
@@ -83,10 +82,9 @@ $.fn.clickToggle = function(a, b) {
     });
 };
 
-
+// On window load
 $(function(){
   changeForm();
-
   setSubmitHandler();
   setLoginHandler();
 });

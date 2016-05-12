@@ -7,7 +7,7 @@ var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
 var markers = [];
 var cookiesUser = JSON.parse(Cookies.get().current_user);
-var currentUser = getCurrentUser();
+// var currentUser = getCurrentUser();
 
 // IRWIN CODE -- Global variable storing current place object. NOT VERY ELEGANT BUT... ¯\_(ツ)_/¯
 var currentPlace = {};
