@@ -7,7 +7,7 @@ var sydney = new google.maps.LatLng(-34.397, 150.644)
 var browserSupportFlag = new Boolean();
 var markers = [];
 var cookiesUser = JSON.parse(Cookies.get().current_user);
-// var currentUser = getCurrentUser();
+var currentUser = getCurrentUser();
 
 // IRWIN CODE -- Global variable storing current place object. NOT VERY ELEGANT BUT... ¯\_(ツ)_/¯
 var currentPlace = {};
@@ -22,8 +22,6 @@ function initMap() {
     minZoom: 5
   };
   map = new google.maps.Map(document.getElementById('map'), options);
-  console.log(map.data);
-  // console.log(google.maps.MapTypeStyleFeatureType);
   var geoMarker = new GeolocationMarker(map);
 
   if(navigator.geolocation) {
@@ -131,6 +129,7 @@ function getCurrentUser() {
     success: function(user){
       currentUser = user;
       renderFavorites(currentUser);
+      deleteFavorite(currentUser);
     }
   })
 } // end getCurrentUser
@@ -138,6 +137,7 @@ function getCurrentUser() {
 
 //// Rendering markers for existing user favorites ////
 function renderFavorites(currentUser) {
+  console.log(currentUser.favorites);
   var favorites = currentUser.favorites;
   for (var i = 0; i < currentUser.favorites.length; i++) {
     var favorite = favorites[i];
@@ -159,7 +159,7 @@ function addMarker(favorite) {
   var marker = new google.maps.Marker({
        position: latlng,
        map: map,
-       icon: icon
+       icon: icon,
        });
 
    addFavoriteInfo(favorite, marker);
@@ -170,13 +170,32 @@ function addFavoriteInfo (favorite, marker) {
   var infowindow = new google.maps.InfoWindow();
   marker.addListener('click', function(){
     infowindow.open(map, this);
-
+    console.log(favorite._id);
     var contentStr = '<h5>'+favorite.name+'</h5><p>'+favorite.address;
     if (favorite.notes) contentStr += '<p>'+favorite.notes+'</p>';
     contentStr += '<br><button id="delete-place">Remove from favorites</button><br>';
     infowindow.setContent(contentStr);
+    deleteFavorite(favorite._id);
   })
 }
+
+//// Delete a favorite ////
+function deleteFavorite(favoriteId) {
+  var favoriteId = favoriteId;
+  console.log(favoriteId);
+  // var favorite = ( currentUser.favorites( 'place_id' ) )
+  // console.log(favorite);
+  $(document).off().on('click', '#delete-place', function(infowindow){
+    $.ajax({
+      url: '/api/users',
+      method: 'delete',
+      data: {id: favoriteId},
+      success: function(data){
+        console.log(data);
+      }
+    })
+  }) // end click function
+} // end deleteFavorite
 
 //// Load Google Places search results ////
 function getPlaceResults(searchBox, map) {
@@ -318,7 +337,6 @@ function savePlace(contentStr, place){
   })
 };
 
-
 // IRWIN CODE -- store place data as a new favorite in the user's db record on confirm
 function setConfirmHandler(){
   $('.confirm').click(function(e){
@@ -347,7 +365,6 @@ function setConfirmHandler(){
   })
 }
 // END OF IRWIN CODEEEEE
-
 
 
 //// Opening & Interacting with Navigation Menu ////
@@ -431,6 +448,8 @@ $.fn.clickToggle = function(a, b) {
 
 // Run on document load
 $(function(){
+
+  deleteFavorite();
 
   initMap();
   resetLocation();

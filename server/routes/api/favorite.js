@@ -13,5 +13,14 @@ var passport = require("../../lib/passportStrategy.js");
 
 
 favoritesRouter.delete('/:place_id', function(req, res) {
+  var cookiesUser = JSON.parse(req.cookies.current_user);
+  var query = { username: cookiesUser.username };
 
+  User.update(query, {$pull: {"favorites": _id}}, function(error,data){
+    if(error){
+      console.log(error);
+    } else {
+      res.json(data);
+    }
+  })
 });
