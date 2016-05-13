@@ -94,3 +94,13 @@ $(function(){
   setSubmitHandler();
   setLoginHandler();
 });
+
+// TEMP DELETE CALL
+// $.ajax({
+// url: "/api/users/",
+// method: "delete",
+// success: function(data){
+// Cookies.remove('user_token');
+// Cookies.remove('current_user');
+// location.reload();}
+// })
