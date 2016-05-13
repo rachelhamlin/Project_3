@@ -425,6 +425,7 @@ function setConfirmHandler(infowindow, $notes){
 
         // Remove icon in favor of new
         marker.setMap(null);
+        getCurrentProfileUser();
       }
     });
     getCurrentUser();
