@@ -13,6 +13,7 @@ var currentPlace = {};
 // EXPERIMENTAL-CATEGORY-SORT
 var filter = [];
 var allMarkers = [];
+var infowindow = null;
 
 //// Create Google map on page load with autocomplete searchBox ////
 function initMap() {
@@ -125,7 +126,6 @@ function initMap() {
 
       $saveButton.click(function(){
         var $notes           = ('<textarea class="notes" placeholder="Add notes">');
-        var $selectList      = ('<select id="customListOptions"><option value="Summer Patio Spots">Summer Patio Spots</option><option value="Fancy Restaurants">Fancy Restaurants</option></select><br>');
         var $confirmButton   = ('<button class="confirm">Save</button>');
         var $expandedArea    = $('.infowindow-expanded');
 
@@ -133,7 +133,6 @@ function initMap() {
         $saveButton.hide();
         if ($expandedArea.children().length === 0){
           $expandedArea.append($notes);
-          $expandedArea.append($selectList);
           $expandedArea.append($confirmButton);
         }
       }) //submitSave
@@ -234,8 +233,13 @@ function addMarker(favorite) {
 
 //// Pop up an infoWindow when a favorite is clicked ////
 function addFavoriteInfo (favorite, marker,counter) {
-  var infowindow = new google.maps.InfoWindow();
+
   marker.addListener('click', function(){
+    if (infowindow) {
+      infowindow.close();
+    }
+    infowindow = new google.maps.InfoWindow();
+    console.log(favorite.notes);
     infowindow.open(map, this);
     console.log(favorite._id);
     var contentStr = '<h5>'+favorite.name+'</h5><p>'+favorite.address;
@@ -275,7 +279,7 @@ function getPlaceResults(searchBox, map) {
     // Same for the navigation bar
       var navBar = $('#navigation');
       if (navBar.is(':visible')){
-        closeNav();
+        navBar.hide();
       }
 
     var places = searchBox.getPlaces();
@@ -379,8 +383,6 @@ function savePlace(infowindow, place, counter){
   currentPlace = place;
   $(document).off().on('click', '#save-place', function(infowindow){
     var $notes           = ('<textarea class="notes" placeholder="Add notes">');
-    // Placeholder to demo what list selection could look like -- next version
-    var $selectList      = ('<select id="customListOptions"><option value="Summer Patio Spots">Summer Patio Spots</option><option value="Fancy Restaurants">Fancy Restaurants</option></select><br>');
     var $confirmButton   = ('<button class="confirm" data-id="' + counter + '">Save</button>');
     var $expandedArea    = $('.infowindow-expanded');
 
@@ -388,15 +390,14 @@ function savePlace(infowindow, place, counter){
     saveButton.hide();
     if ($expandedArea.children().length === 0){
       $expandedArea.append($notes);
-      $expandedArea.append($selectList);
       $expandedArea.append($confirmButton);
-      setConfirmHandler(place);
+      setConfirmHandler(place, $notes);
     }
   })
 };
 
 // IRWIN CODE -- store place data as a new favorite in the user's db record on confirm
-function setConfirmHandler(infowindow){
+function setConfirmHandler(infowindow, $notes){
   $('.confirm').click(function(e){
     e.preventDefault();
     var payload = {
@@ -406,6 +407,7 @@ function setConfirmHandler(infowindow){
       address: currentPlace.formatted_address,
       lat: currentPlace.geometry.location.lat(),
       lng: currentPlace.geometry.location.lng(),
+      // notes: $notes.val()
     };
     console.log($(this).attr('data-id'))
     $.ajax({
@@ -415,24 +417,13 @@ function setConfirmHandler(infowindow){
       data: payload,
       success: function(data){
 
-        // console.log($(this.saveButton).parent().parent());
-        // console.log($(this.saveButton).parent().parent().parent());
-        // console.log($(this.saveButton).parent().parent().parent().parent());
         var counter = $(this.saveButton).attr('data-id');
         var marker = markers[counter];
-        console.log(markers);
-        console.log(counter,marker);
+
 
         // TEMP: append to profile div
         var $li = $('<li>').text(data.name);
         $('#favorite-places').append($li);
-
-        // Close info window
-        // google.maps.event.addListener(marker);
-        console.log(infowindow);
-        console.log($(infowindow));
-        // infowindow.parent.remove();
-        // marker.infowindow.close();
 
         // Remove icon in favor of new
         marker.setMap(null);
