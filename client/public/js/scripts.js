@@ -10,6 +10,9 @@ var cookiesUser = JSON.parse(Cookies.get().current_user);
 //  Global variables storing current user and current place objects. NOT VERY ELEGANT BUT... ¯\_(ツ)_/¯
 var currentUser = {};
 var currentPlace = {};
+// EXPERIMENTAL-CATEGORY-SORT
+var filter = [];
+var allMarkers = [];
 
 //// Create Google map on page load with autocomplete searchBox ////
 function initMap() {
@@ -151,12 +154,57 @@ function getCurrentUser() {
   })
 } // end getCurrentUser
 
+// Sets all markers on map
+function setMapOnAll(map) {
+  for (var i = 0; i < allMarkers.length; i++) {
+    allMarkers[i].setMap(map);
+  }
+}
+
+// Removes the markers from the map and array
+function clearMarkers() {
+  setMapOnAll(null);
+  allMarkers = [];
+}
 
 //// Rendering markers for existing user favorites ////
 function renderFavorites() {
-  var favorites = currentUser.favorites;
+
+  console.log(currentUser.favorites);
+  var favorites = []
+  //  EXPERIMENTAL-CATEGORY-SORT
+  var filterList = [];
+  var index = null;
+  for (var i = 0; i < filter.length; i++) {
+    if (filter[i] == "coffee"){
+      filterList.push("cafe","coffee");
+    } else if (filter[i] == "restaurant"){
+      filterList.push("restaurant","meal_delivery","meal_takeaway");
+    } else if (filter[i] == "bar"){
+      filterList.push("bar","night_club");
+    } else if (filter[i] == "store"){
+      filterList.push("store","bicycle_store","book_store","clothing_store","convenience_store",
+                      "department_store","electronics_store","furniture_store","hardware_store",
+                      "home_goods_store","jewelry_store","liquor_store","pet_store","shoe_store");
+    } else if (filter[i] == "movie"){
+      filterList.push("movie_rental","movie_theater");
+    } else if (filter[i] == "park"){
+      filterList.push("amusement_park","park","rv_park");
+    } else if (filter[i] == "museum"){
+      filterList.push("museum");
+    }
+  }
+
   for (var i = 0; i < currentUser.favorites.length; i++) {
-    addMarker(currentUser.favorites[i]);
+    if(filterList.indexOf(currentUser.favorites[i].type) === -1){
+      favorites.push(currentUser.favorites[i]);
+    }
+  }
+  // for (var i = 0; i < currentUser.favorites.length; i++) {
+  //   addMarker(currentUser.favorites[i]);
+  // }
+  for (var i = 0; i < favorites.length; i++) {
+    addMarker(favorites[i]);
   }
 }
 
@@ -172,17 +220,20 @@ function addMarker(favorite) {
     anchor: new google.maps.Point(0, 0) // anchor
 };
 
+  var counter = 0;
   var marker = new google.maps.Marker({
        position: latlng,
        map: map,
        icon: icon,
-       });
-
-   addFavoriteInfo(favorite, marker);
+       id: counter
+  });
+  allMarkers.push(marker);
+  addFavoriteInfo(favorite, marker,counter);
+  counter++;
 }
 
 //// Pop up an infoWindow when a favorite is clicked ////
-function addFavoriteInfo (favorite, marker) {
+function addFavoriteInfo (favorite, marker,counter) {
   var infowindow = new google.maps.InfoWindow();
   marker.addListener('click', function(){
     infowindow.open(map, this);
@@ -228,10 +279,7 @@ function getPlaceResults(searchBox, map) {
       }
 
     var places = searchBox.getPlaces();
-    // Irwin - Experimenting
-    console.log("Irwin-Stuff");
-    console.log(places[0].geometry.location.lat());
-    // --------------------
+
 
     if (places.length == 0) {
       return;
@@ -409,15 +457,36 @@ function controlNav() {
 
 function toggleCategory() {
   // TODO make AJAX calls to filter through places by category
-  var toggler = $('.cat-toggle')
-  toggler.clickToggle(function(){
-    $(this).removeClass('fa-toggle-on');
-    $(this).addClass('fa-toggle-off');
+  // var toggler = $('.cat-toggle');
+  // toggler.clickToggle(function(){
+  //   $(this).removeClass('fa-toggle-on');
+  //   $(this).addClass('fa-toggle-off');
+  //   filter.push($(this)[0].id);
+  // }, function(){
+  //   $(this).removeClass('fa-toggle-off');
+  //   $(this).addClass('fa-toggle-on');
+  //   filter.pop($(this)[0].id);
+  // });
+
+  // EXPERIMENTAL HANDLER
+  var wholeToggler = $('.whole-toggle');
+  wholeToggler.clickToggle(function(){
+    $(this).children().removeClass('fa-toggle-on');
+    $(this).children().addClass('fa-toggle-off');
+    console.log('filter ' + $(this).children()[0].id);
+    filter.push($(this).children()[0].id);
+    clearMarkers();
+    renderFavorites();
   }, function(){
-    $(this).removeClass('fa-toggle-off');
-    $(this).addClass('fa-toggle-on');
-  })
-}
+    $(this).children().removeClass('fa-toggle-off');
+    $(this).children().addClass('fa-toggle-on');
+    console.log('show ' + $(this).children()[0].id);
+    var index = filter.indexOf($(this).children()[0].id);
+    filter.splice(index, 1);
+    clearMarkers();
+    renderFavorites();
+  });
+};
 
 
 //// Opening & Editing Profile ////
