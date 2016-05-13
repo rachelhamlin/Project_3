@@ -78,6 +78,8 @@ function initMap() {
 
   $('')
 
+  // Add geocoder in order to retrieve POIs by latlng on click...
+  geocoder = new google.maps.Geocoder;
 
   // Override info window prototype to include "add to favorites" button on built-in POIs
   var fx = google.maps.InfoWindow.prototype.setPosition;
@@ -86,7 +88,7 @@ function initMap() {
       google.maps.event.addListenerOnce(this, 'map_changed',function(){
         var map = this.getMap();
         if (map) {
-          google.maps.event.trigger(map, 'click', {content: this.getContent()});
+          google.maps.event.trigger(map, 'click', {content: this.getContent(), latlng: this.getPosition()});
         }
       });
     }
@@ -94,6 +96,24 @@ function initMap() {
   }
 
   google.maps.event.addListenerOnce(map,'click',function(e){
+      var $latlng     = $(e.latlng);
+      console.log($latlng);
+      geocoder.geocode({
+        'location': e.latlng
+      }, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          if (results[0]) {
+            console.log([results]);
+            alert('place id: ' + results[0].place_id);
+          } else {
+            console.log('No results found');
+          }
+        } else {
+          console.log('Geocoder failed due to: ' + status);
+        }
+      });
+
+
       var $infowindow = $(e.content);
       console.log($infowindow);
       var $saveButton = $('<button id="save-place">Add to favorites</button>');
