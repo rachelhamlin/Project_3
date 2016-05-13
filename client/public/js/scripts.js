@@ -81,6 +81,8 @@ function initMap() {
 
   $('')
 
+  // Add geocoder in order to retrieve POIs by latlng on click...
+  geocoder = new google.maps.Geocoder;
 
   // Override info window prototype to include "add to favorites" button on built-in POIs
   var fx = google.maps.InfoWindow.prototype.setPosition;
@@ -89,7 +91,7 @@ function initMap() {
       google.maps.event.addListenerOnce(this, 'map_changed',function(){
         var map = this.getMap();
         if (map) {
-          google.maps.event.trigger(map, 'click', {content: this.getContent()});
+          google.maps.event.trigger(map, 'click', {content: this.getContent(), latlng: this.getPosition()});
         }
       });
     }
@@ -97,6 +99,24 @@ function initMap() {
   }
 
   google.maps.event.addListenerOnce(map,'click',function(e){
+      var $latlng     = $(e.latlng);
+      console.log($latlng);
+      geocoder.geocode({
+        'location': e.latlng
+      }, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          if (results[0]) {
+            console.log([results]);
+            alert('place id: ' + results[0].place_id);
+          } else {
+            console.log('No results found');
+          }
+        } else {
+          console.log('Geocoder failed due to: ' + status);
+        }
+      });
+
+
       var $infowindow = $(e.content);
       console.log($infowindow);
       var $saveButton = $('<button id="save-place">Add to favorites</button>');
@@ -149,6 +169,7 @@ function clearMarkers() {
 
 //// Rendering markers for existing user favorites ////
 function renderFavorites() {
+
   console.log(currentUser.favorites);
   var favorites = []
   //  EXPERIMENTAL-CATEGORY-SORT
@@ -173,6 +194,7 @@ function renderFavorites() {
       filterList.push("museum");
     }
   }
+
   for (var i = 0; i < currentUser.favorites.length; i++) {
     if(filterList.indexOf(currentUser.favorites[i].type) === -1){
       favorites.push(currentUser.favorites[i]);
@@ -189,6 +211,7 @@ function renderFavorites() {
 function addMarker(favorite) {
   var lat    = favorite.lat;
   var lng    = favorite.lng;
+
   var latlng = new google.maps.LatLng(lat, lng);
   var icon = {
     url: '/media/star_icon.png', // url
@@ -197,39 +220,40 @@ function addMarker(favorite) {
     anchor: new google.maps.Point(0, 0) // anchor
 };
 
+  var counter = 0;
   var marker = new google.maps.Marker({
        position: latlng,
        map: map,
        icon: icon,
+       id: counter
   });
   allMarkers.push(marker);
-  addFavoriteInfo(favorite, marker);
+  addFavoriteInfo(favorite, marker,counter);
+  counter++;
 }
 
 //// Pop up an infoWindow when a favorite is clicked ////
-function addFavoriteInfo (favorite, marker) {
+function addFavoriteInfo (favorite, marker,counter) {
   var infowindow = new google.maps.InfoWindow();
   marker.addListener('click', function(){
     infowindow.open(map, this);
     console.log(favorite._id);
     var contentStr = '<h5>'+favorite.name+'</h5><p>'+favorite.address;
     if (favorite.notes) contentStr += '<p>'+favorite.notes+'</p>';
-    contentStr += '<br><button id="delete-place">Remove from favorites</button><br>';
+    contentStr += '<br><button id="delete-place" data-id="' + counter + '">Remove from favorites</button><br>';
     infowindow.setContent(contentStr);
-    deleteFavorite(favorite._id);
+    deleteFavorite(favorite._id, marker);
   })
 }
 
 //// Delete a favorite ////
-function deleteFavorite(favoriteId) {
-  console.log(favoriteId);
+function deleteFavorite(favoriteId, marker) {
   $(document).off().on('click', '#delete-place', function(infowindow){
     $.ajax({
       url: '/api/favorite/' + favoriteId,
       method: 'delete',
       success: function(data){
-        console.log(data);
-        getCurrentUser();
+        marker.setMap(null);
       }
     })
   })
@@ -237,10 +261,11 @@ function deleteFavorite(favoriteId) {
 
 //// Load Google Places search results ////
 function getPlaceResults(searchBox, map) {
-  var markers = [];
+  // var markers = [];
+  markers = [];
   // Listen for event fired when user selects a prediction and retrieve more details for that place
   searchBox.addListener('places_changed', function() {
-
+    markers = [];
     // Close profile before loading results if it is open
       var profile = $('#profile-container');
       if (profile.is(':visible')){
@@ -264,11 +289,12 @@ function getPlaceResults(searchBox, map) {
     markers.forEach(function(marker) {
       marker.setMap(null);
     });
-    markers = [];
+    markers = {};
 
     // Add new markers for each Place
     var bounds = new google.maps.LatLngBounds();
     var infowindow = new google.maps.InfoWindow();
+    counter = 0;
     places.forEach(function(place){
 
       var icon = {
@@ -276,17 +302,20 @@ function getPlaceResults(searchBox, map) {
         size: new google.maps.Size(71,71),
         origin: new google.maps.Point(0,0),
         anchor: new google.maps.Point(17,34),
-        scaledSize: new google.maps.Size(20,20)
+        scaledSize: new google.maps.Size(30,30)
       };
 
       var marker = new google.maps.Marker({
         map: map,
         icon: icon,
         title: place.name,
-        position: place.geometry.location
+        position: place.geometry.location,
+        id: counter
       })
 
-      markers.push(marker);
+      // markers.push(marker);
+      markers[counter] = marker;
+
 
       var request = {
         reference: place.reference
@@ -301,9 +330,12 @@ function getPlaceResults(searchBox, map) {
             contentStr += '<br><button id="save-place">Add to favorites</button><br>';
             contentStr += '<div style="display:none;" class="infowindow-expanded">';
             infowindow.setContent(contentStr);
+            console.log(infowindow);
             infowindow.open(map,marker);
 
-            savePlace(infowindow, place);
+
+            savePlace(infowindow, place, marker.id);
+            setConfirmHandler(infowindow);
 
 
           } else {
@@ -319,8 +351,9 @@ function getPlaceResults(searchBox, map) {
       } else {
         bounds.extend(place.geometry.location);
       }
-
+      counter++;
     });
+    console.log(markers);
     map.fitBounds(bounds);
   })
 }// end GetPlaceResults
@@ -340,25 +373,16 @@ function resetLocation() {
 
 
 //// Saving Places (Add Notes and/or Add To List) ////
-function savePlace(contentStr, place){
-  console.log(place);
-  currentPlace = place;
+function savePlace(infowindow, place, counter){
+  console.log(counter);
   var saveButton = $('#save-place');
+  currentPlace = place;
   $(document).off().on('click', '#save-place', function(infowindow){
     var $notes           = ('<textarea class="notes" placeholder="Add notes">');
+    // Placeholder to demo what list selection could look like -- next version
     var $selectList      = ('<select id="customListOptions"><option value="Summer Patio Spots">Summer Patio Spots</option><option value="Fancy Restaurants">Fancy Restaurants</option></select><br>');
-    var $confirmButton   = ('<button class="confirm">Save</button>');
+    var $confirmButton   = ('<button class="confirm" data-id="' + counter + '">Save</button>');
     var $expandedArea    = $('.infowindow-expanded');
-
-    // TODO grab data list Custom List options from user's data, if any exist
-    // <input type="text" name="customList" list="customListName"/>
-    //   <datalist id="customListName">
-    //       <option value="Summer Patio Spots">Summer Patio Spots</option>
-    //       <option value="Fancy Restaurants">Fancy Restaurants</option>
-    //       <option value="Hidden Gems">Hidden Gems</option>
-    //   </datalist>
-
-    // TODO add a cancelation / slideUp feature to this in case the person does NOT want to save the place
 
     $expandedArea.show();
     saveButton.hide();
@@ -366,17 +390,15 @@ function savePlace(contentStr, place){
       $expandedArea.append($notes);
       $expandedArea.append($selectList);
       $expandedArea.append($confirmButton);
-      // HANDLE CONFIRM SAVE BUTTON ACTION
       setConfirmHandler(place);
     }
   })
 };
 
 // IRWIN CODE -- store place data as a new favorite in the user's db record on confirm
-function setConfirmHandler(){
+function setConfirmHandler(infowindow){
   $('.confirm').click(function(e){
     e.preventDefault();
-
     var payload = {
       name: currentPlace.name,
       place_id: currentPlace.place_id,
@@ -385,15 +407,35 @@ function setConfirmHandler(){
       lat: currentPlace.geometry.location.lat(),
       lng: currentPlace.geometry.location.lng(),
     };
+    console.log($(this).attr('data-id'))
     $.ajax({
       url: '/api/users',
       method: 'put',
+      saveButton: $(this),
       data: payload,
       success: function(data){
-        console.log(data);
+
+        // console.log($(this.saveButton).parent().parent());
+        // console.log($(this.saveButton).parent().parent().parent());
+        // console.log($(this.saveButton).parent().parent().parent().parent());
+        var counter = $(this.saveButton).attr('data-id');
+        var marker = markers[counter];
+        console.log(markers);
+        console.log(counter,marker);
+
+        // TEMP: append to profile div
         var $li = $('<li>').text(data.name);
         $('#favorite-places').append($li);
-        // Let's handle closing the info window after user clicks "confirm save button"
+
+        // Close info window
+        // google.maps.event.addListener(marker);
+        console.log(infowindow);
+        console.log($(infowindow));
+        // infowindow.parent.remove();
+        // marker.infowindow.close();
+
+        // Remove icon in favor of new
+        marker.setMap(null);
       }
     });
     getCurrentUser();
