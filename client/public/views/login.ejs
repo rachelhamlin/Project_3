@@ -2,9 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Serchgey</title>
+    <title>Nextplorer</title>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> <!-- adds FontAwesome library -->
     <link href='https://fonts.googleapis.com/css?family=Monoton' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,900,900italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/styles.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="/css/login.css" media="screen" title="no title" charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
@@ -13,20 +14,20 @@
   </head>
   <body>
 
-    <h2>Serchgy</h2>
+    <h2>NEXTPLORER</h2>
 
     <div id='login-container'>
 
       <div id="login-div">
         <form id="login-form">
           <h4 class='prompt'>
-            Log in to Serchgey
+            Log in to Nextplorer
             <div class='decorative-line'></div>
           </h4>
           <input class='form-field' type="text" name="username" value="" placeholder="Username">
           <input class='form-field' type="password" name="password" value="" placeholder="Password">
           <input id='login-submit' type="submit" name="submit-login" value="Log In">
-          <div class='change-form'>Not a member? <a href='#' id='signup-link'>Sign up</a></div>
+          <div class='change-form'>Not a member?  <a href='#' id='signup-link'>Sign up</a></div>
         </form>
       </div>
       <div id="sign-up-div" style="display:none;">
@@ -35,11 +36,11 @@
             Sign up for free
             <div class='decorative-line'></div>
           </h4>
+          <input class='form-field' type="text" name="firstName" value="" placeholder="First Name">
+          <input class='form-field' type="text" name="lastName" value="" placeholder="Last Name">
           <input class='form-field' type="text" name="username" value="" placeholder="Username*">
           <input class='form-field' type="text" name="email" value="" placeholder="Email*">
           <input class='form-field' type="password" name="password" value="" placeholder="Password*">
-          <input class='form-field' type="text" name="firstName" value="" placeholder="First Name">
-          <input class='form-field' type="text" name="lastName" value="" placeholder="Last Name">
           <input id='signup-submit' type="submit" name="submit-form" value="Sign Up">
           <div class='change-form'>Already have an account? <a href='#' id='login-link'>Log in</a></div>
         </form>
