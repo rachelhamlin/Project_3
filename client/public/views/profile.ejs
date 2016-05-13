@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> <!-- adds FontAwesome library -->
+    <link href='https://fonts.googleapis.com/css?family=Monoton' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/styles.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="/css/login.css" media="screen" title="no title" charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.1/js.cookie.min.js" charset="utf-8"></script>
+    <script src="/js/profile.js" charset="utf-8"></script>  </head>
+  <body>
+    <h1>Edit Profile</h1>
+    <h4><%= currentUser.firstName %> <%= currentUser.lastName %></h4>
+    <div id="edit-profile">
+      <form id="edit-form">
+        <input type="text" name="firstName" value="<%= currentUser.firstName %>">
+        <input type="text" name="lastName" value="<%= currentUser.lastName %>">
+        <input type="text" name="username" value="<%= currentUser.username %>">
+        <input type="text" name="email" value="<%= currentUser.email %>">
+        <input type="submit" name="name" value="Edit">
+      </form>
+    </div>
+  </body>
+</html>

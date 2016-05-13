@@ -411,7 +411,7 @@ function setConfirmHandler(infowindow, $notes){
     };
     console.log($(this).attr('data-id'))
     $.ajax({
-      url: '/api/users',
+      url: '/api/users/edit/addfavorite',
       method: 'put',
       saveButton: $(this),
       data: payload,

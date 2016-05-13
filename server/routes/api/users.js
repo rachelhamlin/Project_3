@@ -81,9 +81,32 @@ usersRouter.delete('/', function(req, res){
       res.json(user);
     }
   })
-})
+});
 
-usersRouter.put('/', function(req, res){
+usersRouter.put('/edit', function(req, res){
+  var editFields = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    username: req.body.username,
+    email: req.body.email
+  };
+  var cookiesUser = JSON.parse(req.cookies.current_user);
+  var query = { username: cookiesUser.username };
+
+  User.update(query, editFields, function(error, changed){
+    if(error){
+      console.log(error);
+    } else {
+      var tokenObject = {_doc: { username: editFields.username }};
+      var token = jwt.sign(tokenObject, process.env.JWT_SECRET, {
+        expiresIn: 1440
+      });
+      res.json({token: token, currentUser: {username: editFields.username}});
+    }
+  });
+});
+
+usersRouter.put('/edit/addfavorite', function(req, res){
 
   var newFavorite = Favorite({
     name: req.body.name,

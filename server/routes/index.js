@@ -12,14 +12,21 @@ router.get('/', function(req, res) {
     currentUser = JSON.parse(req.cookies.current_user);
     var query = { username: currentUser.username };
     User.findOne(query, function(error, user){
-      // theUser = user;
       res.render('index', { currentUser: user });
     });
   } else {
     res.render('login');
   }
-
 });
+
+router.get('/profile', function(req, res){
+  var currentUser = {};
+  currentUser = JSON.parse(req.cookies.current_user);
+  var query = { username: currentUser.username };
+  User.findOne(query, function(error, user){
+    res.render('profile', { currentUser: user });
+  });
+})
 
 
 module.exports = router;
