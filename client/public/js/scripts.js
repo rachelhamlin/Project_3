@@ -108,7 +108,7 @@ function initMap() {
         if (status === google.maps.GeocoderStatus.OK) {
           if (results[0]) {
             console.log([results]);
-            alert('place id: ' + results[0].place_id);
+            alert("You would think this ''" + results[0].place_id + "'' is the correct place id, but it's not");
           } else {
             console.log('No results found');
           }
@@ -168,8 +168,6 @@ function clearMarkers() {
 
 //// Rendering markers for existing user favorites ////
 function renderFavorites() {
-
-  console.log(currentUser.favorites);
   var favorites = []
   //  EXPERIMENTAL-CATEGORY-SORT
   var filterList = [];
@@ -243,7 +241,7 @@ function addFavoriteInfo (favorite, marker,counter) {
     infowindow.open(map, this);
     console.log(favorite._id);
     var contentStr = '<h5>'+favorite.name+'</h5><p>'+favorite.address;
-    if (favorite.notes) contentStr += '<p>'+favorite.notes+'</p>';
+    if (favorite.notes) contentStr += '<p><em>'+favorite.notes+'</em></p>';
     contentStr += '<br><button id="delete-place" data-id="' + counter + '">Remove from favorites</button><br>';
     infowindow.setContent(contentStr);
     deleteFavorite(favorite._id, marker);
