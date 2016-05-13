@@ -13,6 +13,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.1/js.cookie.min.js" charset="utf-8"></script>
     <script src="/js/scripts.js" charset="utf-8"></script>
+    <script src="/js/profile.js" charset="utf-8"></script>
   </head>
   <body>
 
@@ -78,16 +79,12 @@
 <!-- IRWIN  -->
 <!-- Made some temporary additions just to visualize user data -->
    <div id='profile-container' style='display:none;'>
-     <img src='https://avatars2.githubusercontent.com/u/15470435?v=3&s=460'>
+     <!-- <img src='https://avatars2.githubusercontent.com/u/15470435?v=3&s=460'> -->
 
      <div id='close-profile'><p><i class="fa fa-sort-asc" aria-hidden="true"></i></p></div>
-     <h1><%= currentUser.firstName %> <%= currentUser.lastName %></h1>
-     <h3>Favorite Places: </h3>
-     <ul id="favorite-places">
-       <% for (var i = 0; i < currentUser.favorites.length; i++) { %>
-         <li><%= currentUser.favorites[i].name %></li>
-       <% } %>
-     </ul>
+     <div id='edit-profile'>
+
+     </div>
    </div>
 
     <div id='map'>
