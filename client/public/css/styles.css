@@ -227,11 +227,11 @@ input[type=submit] {
 
 #navigation li:hover {
   cursor: pointer;
-  background-color: rgb(44,99,47);
+  background-color: #21212b;
 }
 
 #navigation li:active {
-  background-color: rgb(44,99,47);
+  background-color: #21212b;
 }
 
 .menu-logout {
