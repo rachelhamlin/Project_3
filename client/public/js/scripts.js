@@ -485,7 +485,7 @@ function openProfile() {
     // Close navbar before loading results if it is open
     var navBar = $('#navigation');
     if (navBar.is(':visible')){
-      closeNav();
+      navBar.hide();
     }
 
     var profile = $('#profile-container');
