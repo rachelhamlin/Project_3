@@ -407,7 +407,7 @@ function setConfirmHandler(infowindow, $notes){
       address: currentPlace.formatted_address,
       lat: currentPlace.geometry.location.lat(),
       lng: currentPlace.geometry.location.lng(),
-      // notes: $notes.val()
+      notes: $('.notes').val()
     };
     console.log($(this).attr('data-id'))
     $.ajax({
