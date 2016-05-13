@@ -263,11 +263,20 @@ function deleteFavorite(favoriteId, marker) {
 
 //// Load Google Places search results ////
 function getPlaceResults(searchBox, map) {
-  // var markers = [];
-  markers = [];
+
   // Listen for event fired when user selects a prediction and retrieve more details for that place
+  // If there are markers from a previous search, clear them first.
   searchBox.addListener('places_changed', function() {
+    if (Object.keys(markers)){
+      Object.keys(markers).forEach(function(markerKey){
+        console.log(markerKey);
+        markers[markerKey].setMap(null);
+      })
+    }
+
+    // Fresh markers array
     markers = [];
+
     // Close profile before loading results if it is open
       var profile = $('#profile-container');
       if (profile.is(':visible')){
