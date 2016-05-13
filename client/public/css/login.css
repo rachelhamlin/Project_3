@@ -58,10 +58,12 @@ h2 {
 .form-field {
   width: 230px;
   height: 25px;
-  /*border: 1px solid rgb(0,0,0);*/
-  border: 0px solid #000000;
+  border: none;
   border-bottom-width: 1px;
-  background-color: transparent;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset;
 }
 
 #login-submit, #signup-submit {
