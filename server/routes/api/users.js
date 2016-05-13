@@ -68,6 +68,21 @@ usersRouter.post('/', function(req, res){
 //  *** H4CK3R$ NOT ALLOWED PAST THIS POINT ***
 usersRouter.use(passport.authenticate('jwt', {session: false}));
 
+usersRouter.delete('/', function(req, res){
+  var cookiesUser = JSON.parse(req.cookies.current_user);
+  var query = { username: cookiesUser.username };
+
+  User.remove(query, function(error, user){
+    if (error){
+      console.log(error);
+    } else {
+      console.log('deleted');
+      // res.redirect('index');
+      res.json(user);
+    }
+  })
+})
+
 usersRouter.put('/', function(req, res){
 
   var newFavorite = Favorite({
