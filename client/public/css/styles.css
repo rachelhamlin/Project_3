@@ -281,6 +281,23 @@ input[type=submit] {
   cursor: pointer;
 }
 
+#edit-profile {
+  padding-top: 50px;
+  padding-left: 100px;
+}
+
+#edit-profile input {
+  margin-right: 10px;
+}
+
+#edit-profile label {
+  margin-right: 10px;
+}
+
+#edit-profile h2 {
+  color: rgb(176, 10, 25);
+}
+
 
 /*Media Queries*/
 

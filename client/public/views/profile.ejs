@@ -12,15 +12,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.1/js.cookie.min.js" charset="utf-8"></script>
     <script src="/js/profile.js" charset="utf-8"></script>  </head>
   <body>
-    <h1>Edit Profile</h1>
-    <h4><%= currentUser.firstName %> <%= currentUser.lastName %></h4>
     <div id="edit-profile">
+      <h1>Edit Profile</h1>
+      <h4><%= currentUser.firstName %> <%= currentUser.lastName %></h4>
       <form id="edit-form">
         <input type="text" name="firstName" value="<%= currentUser.firstName %>">
         <input type="text" name="lastName" value="<%= currentUser.lastName %>">
         <input type="text" name="username" value="<%= currentUser.username %>">
         <input type="text" name="email" value="<%= currentUser.email %>">
-        <input type="submit" name="name" value="Edit">
+        <input id="edit-user" type="submit" name="name" value="Edit">
+        <input id="delete-user" type="submit" name="name" value="Delete">
       </form>
     </div>
   </body>
