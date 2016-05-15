@@ -442,8 +442,8 @@ function setConfirmHandler(infowindow, $notes){
 // END OF IRWIN CODEEEEE
 
 
-//// Opening & Interacting with Navigation Menu ////
-function controlNav() {
+//// Opening & Interacting with Navigation Menus ////
+function controlFilterMenu() {
   var navButton = $('#hamburger-button');
   var navBar = $('#navigation');
   navButton.clickToggle(function(){
@@ -485,6 +485,16 @@ function toggleCategory() {
     renderFavorites();
   });
 };
+
+function controlProfileMenu() {
+  var profileDiv = $('#profile-menu');
+  var profileMenu = $('#dropdown-menu');
+  profileDiv.clickToggle(function(){
+    profileMenu.slideDown();
+  }, function(){
+    profileMenu.slideUp();
+  })
+}
 
 
 //// Opening & Editing Profile ////
@@ -550,8 +560,9 @@ $(function(){
   initMap();
   resetLocation();
 
-  controlNav();
+  controlFilterMenu();
   toggleCategory();
+  controlProfileMenu();
 
   openProfile();
   handleCloseButton();

@@ -8,13 +8,52 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
-h2 {
+#logo-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 1%;
+}
+
+#logo-container img {
+  height: 223.2px;
+  width: 203.76px;
+  float: left;
+}
+
+#logo-container h2 {
   color: rgb(255,255,255);
   font-family: 'Monoton', cursive;
   font-weight: 400;
   font-size: 3.5rem;
   text-align: center;
   text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+/*//////////////////////////////////////////////*/
+
+#form-container {
+  background-color: #21212b;
+  padding: 10px 10px 20px 10px;
+  width: 350px;
+  border-radius: 3px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  text-align: center;
+  margin-top: 5%;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset;
+    -webkit-text-fill-color: #21212b !important;
+}
+
+.greeting-line {
+  color: white;
+  font-weight: lighter;
 }
 
 .decorative-line {
@@ -28,22 +67,6 @@ h2 {
   margin-right: auto;
 }
 
-#login-container {
-  background-color: rgba(0,0,0,.6);
-  padding: 10px 10px 20px 10px;
-  width: 350px;
-  border-radius: 3px;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  left: 50%;
-  text-align: center;
-}
-
-#login-container .prompt {
-  color: white;
-  font-weight: lighter;
-}
 
 #login-form input, #new-user input {
   font-size: 11.49px;
@@ -68,7 +91,7 @@ input:-webkit-autofill {
 
 #login-submit, #signup-submit {
   border: 1px solid #316f34;
-  width: 250px;
+  width: 230px;
   height: 35px;
   background-color: #448247;
   color: #FFFFFF;
@@ -81,7 +104,7 @@ input:-webkit-autofill {
 }
 
 .change-form {
-  font-size: .8rem;
+  font-size: 1.2rem;
   font-style: italic;
   color: rgba(128,128,128,.6);
   margin-top: 10px;
