@@ -15,36 +15,34 @@
   </head>
   <body>
 
-    <div id='logo-container'>
-    <img src='/media/Nextplorer-1.png'/>
-    </div>
 
-    <div id='form-container'>
+    <h2>NEXTPLORER</h2>
+
+    <div id='login-container'>
 
       <div id="login-div">
         <form id="login-form">
-          <h4 class='greeting-line'>
+          <h4 class='prompt'>
             Log in to Nextplorer
             <div class='decorative-line'></div>
           </h4>
-          <input class='form-field' type="text" name="username" placeholder="Username">
-          <input class='form-field' type="password" name="password" placeholder="Password">
+          <input class='form-field' type="text" name="username" value="" placeholder="Username">
+          <input class='form-field' type="password" name="password" value="" placeholder="Password">
           <input id='login-submit' type="submit" name="submit-login" value="Log In">
           <div class='change-form'>Not a member?<a href='#' id='signup-link'>&nbsp; Sign up</a></div>
         </form>
       </div>
-
       <div id="sign-up-div" style="display:none;">
         <form id="new-user" action="/api/users" method="post">
-          <h4 class='greeting-line'>
+          <h4 class='prompt'>
             Sign up for free
             <div class='decorative-line'></div>
           </h4>
-          <input class='form-field' type="text" name="firstName" placeholder="First Name">
-          <input class='form-field' type="text" name="lastName" placeholder="Last Name">
-          <input class='form-field' type="text" name="username" placeholder="Username*">
-          <input class='form-field' type="text" name="email" placeholder="Email*">
-          <input class='form-field' type="password" name="password" placeholder="Password*">
+          <input class='form-field' type="text" name="firstName" value="" placeholder="First Name">
+          <input class='form-field' type="text" name="lastName" value="" placeholder="Last Name">
+          <input class='form-field' type="text" name="username" value="" placeholder="Username*">
+          <input class='form-field' type="text" name="email" value="" placeholder="Email*">
+          <input class='form-field' type="password" name="password" value="" placeholder="Password*">
           <input id='signup-submit' type="submit" name="submit-form" value="Sign Up">
           <div class='change-form'>Already have an account? <a href='#' id='login-link'>Log in</a></div>
         </form>

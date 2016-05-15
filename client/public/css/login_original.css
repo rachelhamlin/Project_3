@@ -1,0 +1,104 @@
+body {
+  background: #000000; /* fallback for old browsers */
+  background: -webkit-radial-gradient(circle, #606778 , #21212b); /* Chrome 10-25, Safari 5.1-6 */
+  background: radial-gradient(circle #606778 , #21212b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+}
+
+/*Difference is that this file does not have any #logo-container with img and instead uses an H2*/
+/*Rest of file needs to be updated to match login.css form styling before it can be re-implemented */
+/*Don't forget to rename/add/remove classes & IDs in login_original.ejs as well.*/
+
+h2 {
+  color: rgb(255,255,255);
+  font-family: 'Monoton', cursive;
+  font-weight: 400;
+  font-size: 3.5rem;
+  text-align: center;
+  text-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+}
+
+.decorative-line {
+  width: 200px;
+  height: 4px;
+  background: #000000; /* fallback for old browsers */
+  background: -webkit-radial-gradient(circle, #448247, rgba(255,255,255,0)); /* Chrome 10-25, Safari 5.1-6 */
+  background: radial-gradient(circle #448247, rgba(255,255,255,0)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  margin-left: auto;
+  margin-top: 4px;
+  margin-right: auto;
+}
+
+#login-container {
+  background-color: rgba(0,0,0,.6);
+  padding: 10px 10px 20px 10px;
+  width: 350px;
+  border-radius: 3px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  text-align: center;
+}
+
+#login-container .prompt {
+  color: white;
+  font-weight: lighter;
+}
+
+#login-form input, #new-user input {
+  font-size: 11.49px;
+  padding-left: 15px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin: 5px;
+  font-family: 'Lato', sans-serif;
+}
+
+.form-field {
+  width: 230px;
+  height: 25px;
+  border: none;
+  border-bottom-width: 1px;
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset;
+}
+
+#login-submit, #signup-submit {
+  border: 1px solid #316f34;
+  width: 250px;
+  height: 35px;
+  background-color: #448247;
+  color: #FFFFFF;
+  font-size: 1em !important;
+}
+
+#login-submit:hover, #signup-submit:hover {
+  cursor: pointer;
+  background-color: #316f34;
+}
+
+.change-form {
+  font-size: .8rem;
+  font-style: italic;
+  color: rgba(128,128,128,.6);
+  margin-top: 10px;
+}
+
+.change-form a {
+  text-decoration: none;
+  font-style: normal;
+  color: rgb(255,255,255);
+}
+
+.change-form a:hover {
+  text-decoration: underline;
+  font-style: normal;
+  color: rgb(255,255,255);
+}
