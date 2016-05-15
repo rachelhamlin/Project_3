@@ -69,6 +69,10 @@ body {
   position: absolute;
 }
 
+#filter:hover {
+  cursor: pointer;
+}
+
 .search-container {
   position: absolute;
   float: left;
@@ -143,9 +147,10 @@ body {
   background-color: black;
 }
 
-.profile-img img:hover {
+.profile-menu:hover {
   cursor: pointer;
 }
+
 
 #dropdown-arrow {
   position: absolute;
@@ -213,11 +218,10 @@ input[type=submit] {
   height: auto;
   position: absolute;
   top: 7%;
+  left: 85%;
   background-color: rgba(96,103,120,.96);
-  z-index: 1;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
+  z-index: 2;
+  padding: 0 10px 5px 10px;
   color: rgb(255,255,255);
 }
 
@@ -240,14 +244,14 @@ input[type=submit] {
 }
 
 #navigation {
-  width: 20%;
-  height: 93%;
+  width: 15%;
+  height: auto;
   position: absolute;
   top: 7%;
+  left: 10%;
   background-color: rgba(96,103,120,.96);
   z-index: 1;
-  padding: 0;
-  margin: 0;
+  padding: 0 0 5px 0;
   overflow: hidden;
   color: rgb(255,255,255);
 }
@@ -321,7 +325,7 @@ input[type=submit] {
   color: rgb(50,50,50);
   position: absolute;
   left: 90.5%;
-  top: -7%;
+  top: 0;
 }
 
 #close-profile:hover {

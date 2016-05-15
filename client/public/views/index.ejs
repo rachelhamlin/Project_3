@@ -20,13 +20,13 @@
 
       <div id='top-nav'>
 
-        <div id='hamburger-button'>
+        <!-- <div id='hamburger-button'>
          <span></span>
          <span></span>
          <span></span>
-        </div>
+        </div> -->
 
-        <!-- <div id='logo'>Nextplorer</div> -->
+        <div id='logo'>Nextplorer</div>
 
         <div id='filter'>Filter <i class="fa fa-sort-desc" aria-hidden="true"></i></div>
 
@@ -42,7 +42,6 @@
           <div class='profile-img'>
             <img src='https://avatars2.githubusercontent.com/u/15470435?v=3&s=460'>
           </div>
-
           <div id='dropdown-arrow'><i class="fa fa-sort-desc" aria-hidden="true"></i></div>
         </div>
 
@@ -50,12 +49,12 @@
 
   <div id='dropdown-menu' style='display:none;'>
     <ul>
-      <li><a href='#'>My Profile</a></li>
-      <!-- <li><a href="#" id='logout-link'>Log Out</a></li> -->
+      <li><a href='#' id='profile-link'>My Profile</a></li>
+      <li><a href="#" id='logout-link'>Log Out</a></li>
     </ul>
   </div>
 
-   <div id='navigation' style='display:none;'>
+   <!-- <div id='navigation' style='display:none;'>
      <ul>
        <div class='nav-heading'>
          <h3>Sort</h3>
@@ -71,17 +70,29 @@
     <div class='menu-logout'>
       <a href="#" id='logout-link'><br><br>Log Out</a>
     </div>
+   </div> -->
+
+   <div id='navigation' style='display:none;'>
+     <ul>
+         <li class="whole-toggle"><i id="restaurant" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Restaurants</li>
+         <li class="whole-toggle"><i id="bar" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Bars</li>
+         <li class="whole-toggle"><i id="coffee" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Coffee Shops</li>
+         <li class="whole-toggle"><i id="store" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Stores</li>
+         <li class="whole-toggle"><i id="movie" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Movie Theaters</li>
+         <li class="whole-toggle"><i id="park" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Parks</li>
+         <li class="whole-toggle"><i id="museum" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Museums</li>
+    </ul>
    </div>
 
 
 <!-- IRWIN  -->
 <!-- Made some temporary additions just to visualize user data -->
    <div id='profile-container' style='display:none;'>
-     <img src='https://avatars2.githubusercontent.com/u/15470435?v=3&s=460'>
+     <!-- <img src='https://avatars2.githubusercontent.com/u/15470435?v=3&s=460'> -->
 
      <div id='edit-profile'></div>
 
-     <div id='close-profile'><p><i class="fa fa-sort-asc" aria-hidden="true"></i></p></div>
+     <div id='close-profile'><p><i class="fa fa-times" aria-hidden="true"></i></p></div>
 
    </div>
 

@@ -444,13 +444,20 @@ function setConfirmHandler(infowindow, $notes){
 
 //// Opening & Interacting with Navigation Menus ////
 function controlFilterMenu() {
-  var navButton = $('#hamburger-button');
+  // var navButton = $('#hamburger-button');
+  var filter = $('#filter');
   var navBar = $('#navigation');
-  navButton.clickToggle(function(){
+
+  filter.clickToggle(function(){
     navBar.slideDown();
-  }, function(){
+  }, function() {
     navBar.slideUp();
   })
+  // navButton.clickToggle(function(){
+  //   navBar.slideDown();
+  // }, function(){
+  //   navBar.slideUp();
+  // })
 }
 
 function toggleCategory() {
@@ -486,32 +493,46 @@ function toggleCategory() {
   });
 };
 
-function controlProfileMenu() {
-  var profileDiv = $('#profile-menu');
-  var profileMenu = $('#dropdown-menu');
-  profileDiv.clickToggle(function(){
-    profileMenu.slideDown();
-  }, function(){
-    profileMenu.slideUp();
-  })
-}
-
 
 //// Opening & Editing Profile ////
+function controlProfileMenu() {
+  var profileDiv = $('.profile-menu');
+  var profileMenu = $('#dropdown-menu');
+  profileDiv.clickToggle(
+    function() {
+      profileMenu.slideDown();
+    }, function() {
+      profileMenu.slideUp();
+    }
+  );
+}
+
 function openProfile() {
-  var profileIcon = $('.profile-img');
-  profileIcon.clickToggle(function(){
-    // Close navbar before loading results if it is open
+  var profileLink = $('#profile-link');
+  var profileMenu = $('#dropdown-menu');
+  profileLink.click(function(){
     var navBar = $('#navigation');
     if (navBar.is(':visible')){
       navBar.hide();
     }
-
+    console.log('sup');
     var profile = $('#profile-container');
     profile.slideDown();
-  }, function(){
-    closeProfile();
+    profileMenu.slideUp();
   })
+//   profileLink.clickToggle(function(){
+//     console.log('yay');
+//     // Close navbar before loading results if it is open
+//     var navBar = $('#navigation');
+//     if (navBar.is(':visible')){
+//       navBar.hide();
+//     }
+//
+//     var profile = $('#profile-container');
+//     profile.show();
+//   }, function(){
+//     closeProfile();
+//   })
 }
 
 function handleCloseButton() {
