@@ -8,6 +8,7 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css" rel="stylesheet"> <!-- adds FontAwesome library -->
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700,900,900italic' rel='stylesheet' type='text/css'>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCA2MtDTfBu8jQbwT0m2OAxLuG55VNt_8Q&libraries=places"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="/js/geolocation-marker.js"></script>
     <!-- TODO Update Maps URL with hidden key -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
@@ -17,16 +18,17 @@
   </head>
   <body>
 
-    <div id='nav-container'>
-      <div id='header' class='clearfix'>
+      <div id='top-nav'>
 
-        <div id='hamburger-button'>
+        <!-- <div id='hamburger-button'>
          <span></span>
          <span></span>
          <span></span>
-        </div>
+        </div> -->
 
         <div id='logo'>Nextplorer</div>
+
+        <div id='filter'>Filter <i class="fa fa-sort-desc" aria-hidden="true"></i></div>
 
         <div class='box'>
           <div class='search-container'>
@@ -36,20 +38,23 @@
           </div>
         </div>
 
-
-        <div class='profile-img'>
-          <img src='https://avatars2.githubusercontent.com/u/15470435?v=3&s=460'>
+        <div class='profile-menu'>
+          <div class='profile-img'>
+            <img src='https://avatars2.githubusercontent.com/u/15470435?v=3&s=460'>
+          </div>
+          <div id='dropdown-arrow'><i class="fa fa-sort-desc" aria-hidden="true"></i></div>
         </div>
 
-     </div>
+        </div>
 
-     <!-- <div id='#sub-header'>
-        <span>Categories</span>
-     </div> -->
-
+  <div id='dropdown-menu' style='display:none;'>
+    <ul>
+      <li><a href='#' id='profile-link'>My Profile</a></li>
+      <li><a href="#" id='logout-link'>Log Out</a></li>
+    </ul>
   </div>
 
-   <div id='navigation' style='display:none;'>
+   <!-- <div id='navigation' style='display:none;'>
      <ul>
        <div class='nav-heading'>
          <h3>Sort</h3>
@@ -65,14 +70,18 @@
     <div class='menu-logout'>
       <a href="#" id='logout-link'><br><br>Log Out</a>
     </div>
-   </div>
+   </div> -->
 
-
-   <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Saved!</button>
-
-   <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-     <div class="modal-dialog modal-sm">
-     </div>
+   <div id='navigation' style='display:none;'>
+     <ul>
+         <li class="whole-toggle"><i id="restaurant" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Restaurants</li>
+         <li class="whole-toggle"><i id="bar" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Bars</li>
+         <li class="whole-toggle"><i id="coffee" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Coffee Shops</li>
+         <li class="whole-toggle"><i id="store" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Stores</li>
+         <li class="whole-toggle"><i id="movie" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Movie Theaters</li>
+         <li class="whole-toggle"><i id="park" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Parks</li>
+         <li class="whole-toggle"><i id="museum" class="fa fa-toggle-on cat-toggle" aria-hidden="true"></i> Museums</li>
+    </ul>
    </div>
 
 
@@ -81,10 +90,10 @@
    <div id='profile-container' style='display:none;'>
      <!-- <img src='https://avatars2.githubusercontent.com/u/15470435?v=3&s=460'> -->
 
-     <div id='close-profile'><p><i class="fa fa-sort-asc" aria-hidden="true"></i></p></div>
-     <div id='edit-profile'>
+     <div id='edit-profile'></div>
 
-     </div>
+     <div id='close-profile'><p><i class="fa fa-times" aria-hidden="true"></i></p></div>
+
    </div>
 
     <div id='map'>

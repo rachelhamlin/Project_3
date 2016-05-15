@@ -1,32 +1,18 @@
+@import url('http://getbootstrap.com/dist/css/bootstrap.css');
+
 body {
   margin: 0;
   padding: 0;
   font-family: 'Lato', sans-serif;
 }
 
-/*#nav-container {
-  top: 0;
-  position: fixed;
-  width: 100%;
-  height: 60px;
-  z-index: 3;
-  /*clear: both;*/
-/*}*/
-
-#header {
+#top-nav {
   position: fixed;
   background-color: #21212b;
   width: 100%;
   height: 7%;
   z-index: 3;
 }
-
-/*#sub-header {
-  background: #3c3c4b;
-  width: 100%;
-  height: 10px;
-  z-index: 3;
-}*/
 
 #hamburger-button {
   vertical-align: middle;
@@ -53,7 +39,8 @@ body {
   cursor: pointer;
 }
 
-#logo {
+/*Hamburger button version*/
+/*#logo {
   font-size: 1.5em;
   color: rgb(255,255,255);
   float: left;
@@ -61,6 +48,29 @@ body {
   top: 20%;
   position: absolute;
   margin-left: 1%;
+}*/
+
+#logo {
+  font-size: 1.5em;
+  color: rgb(255,255,255);
+  float: left;
+  left: 2%;
+  top: 20%;
+  position: absolute;
+  margin-left: 1%;
+}
+
+#filter {
+  font-size: .9em;
+  color: #FFFFFF;
+  float: left;
+  left: 15%;
+  top: 35%;
+  position: absolute;
+}
+
+#filter:hover {
+  cursor: pointer;
 }
 
 .search-container {
@@ -129,6 +139,7 @@ body {
   left: 90%;
 }
 
+
 .profile-img img {
   max-height: 30px;
   max-width: 30px;
@@ -136,9 +147,19 @@ body {
   background-color: black;
 }
 
-.profile-img img:hover {
+.profile-menu:hover {
   cursor: pointer;
 }
+
+
+#dropdown-arrow {
+  position: absolute;
+  float: left;
+  left: 93%;
+  top: 25%;
+  color: white;
+}
+
 
 #map {
   position: absolute;
@@ -192,15 +213,45 @@ input[type=submit] {
   color: white !important;
 }
 
-#navigation {
-  width: 20%;
-  height: 93%;
+#dropdown-menu {
+  width: 10%;
+  height: auto;
   position: absolute;
   top: 7%;
+  left: 85%;
+  background-color: rgba(96,103,120,.96);
+  z-index: 2;
+  padding: 0 10px 5px 10px;
+  color: rgb(255,255,255);
+}
+
+#dropdown-menu ul {
+  padding: 0 0 3% 0;
+  margin: 0;
+}
+
+#dropdown-menu li {
+  margin: 0;
+  padding-top: 5%;
+  padding-left: 3%;
+  list-style-type: none;
+  display: block;
+  width: 100%;
+}
+
+#dropdown-menu a {
+  color: white;
+}
+
+#navigation {
+  width: 15%;
+  height: auto;
+  position: absolute;
+  top: 7%;
+  left: 10%;
   background-color: rgba(96,103,120,.96);
   z-index: 1;
-  padding: 0;
-  margin: 0;
+  padding: 0 0 5px 0;
   overflow: hidden;
   color: rgb(255,255,255);
 }
@@ -274,7 +325,7 @@ input[type=submit] {
   color: rgb(50,50,50);
   position: absolute;
   left: 90.5%;
-  top: -7%;
+  top: 0;
 }
 
 #close-profile:hover {

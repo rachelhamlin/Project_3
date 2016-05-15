@@ -7,6 +7,7 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> <!-- adds FontAwesome library -->
     <link href='https://fonts.googleapis.com/css?family=Monoton' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Lato:400,700,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/styles.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="/css/login.css" media="screen" title="no title" charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
@@ -15,33 +16,36 @@
   </head>
   <body>
 
-    <h2>NEXTPLORER</h2>
+    <div id='logo-container'>
+    <img src='/media/Nextplorer-1.png'/>
+    </div>
 
-    <div id='login-container'>
+    <div id='form-container'>
 
       <div id="login-div">
         <form id="login-form">
-          <h4 class='prompt'>
+          <h4 class='greeting-line'>
             Log in to Nextplorer
             <div class='decorative-line'></div>
           </h4>
-          <input class='form-field' type="text" name="username" value="" placeholder="Username">
-          <input class='form-field' type="password" name="password" value="" placeholder="Password">
+          <input class='form-field' type="text" name="username" placeholder="Username">
+          <input class='form-field' type="password" name="password" placeholder="Password">
           <input id='login-submit' type="submit" name="submit-login" value="Log In">
           <div class='change-form'>Not a member?<a href='#' id='signup-link'>&nbsp; Sign up</a></div>
         </form>
       </div>
+
       <div id="sign-up-div" style="display:none;">
         <form id="new-user" action="/api/users" method="post">
-          <h4 class='prompt'>
+          <h4 class='greeting-line'>
             Sign up for free
             <div class='decorative-line'></div>
           </h4>
-          <input class='form-field' type="text" name="firstName" value="" placeholder="First Name">
-          <input class='form-field' type="text" name="lastName" value="" placeholder="Last Name">
-          <input class='form-field' type="text" name="username" value="" placeholder="Username*">
-          <input class='form-field' type="text" name="email" value="" placeholder="Email*">
-          <input class='form-field' type="password" name="password" value="" placeholder="Password*">
+          <input class='form-field' type="text" name="firstName" placeholder="First Name">
+          <input class='form-field' type="text" name="lastName" placeholder="Last Name">
+          <input class='form-field' type="text" name="username" placeholder="Username*">
+          <input class='form-field' type="text" name="email" placeholder="Email*">
+          <input class='form-field' type="password" name="password" placeholder="Password*">
           <input id='signup-submit' type="submit" name="submit-form" value="Sign Up">
           <div class='change-form'>Already have an account? <a href='#' id='login-link'>Log in</a></div>
         </form>
