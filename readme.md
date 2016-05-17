@@ -3,9 +3,9 @@
 
 Nextplorer is a personal city guide for urban dwellers, travelers and explorers.
 
-The perk of city life is an endless list of places to try: that new restaurant by a celebrity chef, the speakeasy your friend says you have to try, a gallery opening you saw on Instagram. Keeping track is the only trouble.
+The perk of city life is an endless list of places to try: a new restaurant by a celebrity chef, a speakeasy your friend swears by, a gallery opening on Instagram. Keeping track is the only trouble.
 
-Enter Nextplorer: a bookmarking tool for you to save spots in your city—and around the world–that you want to remember. Next time you’re looking for a bite to eat or something to do, open the app to see all your places nearby. Save new places, add personal notes, and filter by category. Nextplorer makes it easy to make good on all the places you’ve been planning to try.
+Enter Nextplorer: a bookmarking tool for you to save spots in your city—and around the world—that you want to remember. Next time you’re looking for a bite to eat or something to do, open the app to see all your places nearby. Save new ones, add personal notes, and filter by category. Nextplorer makes it easy to make good on all those things you mean to try.
 
 Nextplorer is built with Node.js, Mongo, and Express.
 
