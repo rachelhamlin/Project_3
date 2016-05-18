@@ -38,17 +38,21 @@ Lastly, users can edit their personal information and update or delete their acc
 * Express
 * Mongo DB
 * Mongoose
+* Passport JS
 * Google Maps API
 * Hand-coded CSS & HTML
 
-**Back-End:**
-Two models with a nested schema. Users and their saved favorites persist and are served from our own API. Irwin section!
-
 **Front-End:**
 
-The front-end is making AJAX calls to the database to render a user’s existing favorites. Any time a user removes or adds a favorite, the favorite is added to the map in real time. Same goes for any profile updates.
+The front-end relies exclusively on the Google Maps API and the Google Places library component for most functionality. AJAX calls are made to the database for creating, editing, reading and deleting users. AJAX calls are also used to add favorites to a User, render a User’s existing favorites and render new saved favorites. All content and functionality is handled without leaving the single page view and is updated in real-time using AJAX and JQuery.
 
 To load any new places for saving, the front-end relies exclusively on the Google Maps API and the Google Places library as a component.
+
+**Back-End:**
+
+The Mongo database is comprised of a single collection of Users outlined with a User model. Each User has a unique username and email address, among other fields, and also contains an array of 'Favorites' which is modeled with a nested Favorites schema. Users are required to login with their username and password before accessing Nextplorer. Passport authentication and authorization is handled by the Passport JS module and a custom passport strategy. Users and their saved favorites persist and are served from our own API.
+
+Routing is performed by Express. The index router handles Nextplorer's single page view by checking for a current cookie containing an authorized User session. In the absence of a legitimate user cookie, the User is routed to a login view. After a successful login, the User is routed to the main index view. API routes handle authorization, favorites delete, and the full array of CRUD actions for Users.
 
 
 ## The Approach
@@ -65,11 +69,14 @@ Along the way, our PMs provided us with user research that led to several helpfu
 ## Final Thoughts
 
 In the future, we’d really like to:
-* Enable a user to save any place on the map, including from Google’s built-in Points of Interest. There is some initial code that can access a POI’s address in string format by reverse geocoding, and we want to send that back through our search input in order to grab the correct place for saving.
-* Tailor the icons on the map to match their place of business. Each newly-created marker could take a property matching its place type, with an icon generated to match that.
+* Enable a user to save any nearby place on the map, including from Google’s built-in Points of Interest. There is some initial code that can access a POI’s address in string format by reverse geocoding, and we want to send that back through our search input in order to grab the exact place ID for saving.
+* Tailor the icons on the map to match their place of business. Each newly-created marker could take a property matching its place type and display an appropriate matching icon..
 * Populate new place search results when the map is dragged. There is starter code for this as well....called sergeyIsTheBest. Not semantic, but semi-true.
 * Pull in images or other helpful data to a new place result. It would be fun to also work with the Instagram API to pull the latest social images tagged at a given location, for a live sense of the scene.
+* Add UI to allow Users to quickly view all saved favorites and easily edit or remove favorites from that list.
+* Add UI elements to handle miscellaneous actions such as failed login attempts.
 * Make the app fully responsive and mobile-optimized.
 * Style the profile page.
 * Add custom lists.
+* Add friends functionality along with custom list sharing.
 * Refactor.
